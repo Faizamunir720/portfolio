@@ -1,26 +1,186 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #05060c;
+  --foreground: #f4f4f5;
+  --muted: #c4c4cc;
+  --hairline: rgb(255 255 255 / 0.12);
+  --surface: rgb(14 16 24 / 0.94);
+  --surface-solid: #10121a;
+  --glow-gold: rgba(255, 190, 70, 0.35);
+  --glow-cyan: rgba(80, 180, 255, 0.25);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-muted: var(--muted);
+  --color-hairline: var(--hairline);
+  --color-surface: var(--surface);
+  --color-surface-solid: var(--surface-solid);
+  --font-sans: var(--font-inter);
+  --font-mono: var(--font-ibm-plex-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
+  color-scheme: dark;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+}
+
+::selection {
+  background: #ffffff;
+  color: #0a0a0e;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .marquee-track {
+    animation: none !important;
+  }
+}
+
+.bento-card {
+  border: 1px solid rgb(255 255 255 / 0.12);
+  border-radius: 1.5rem;
+  background: rgb(12 14 22 / 0.94);
+  backdrop-filter: blur(18px);
+  box-shadow: 0 20px 40px -28px rgb(0 0 0 / 0.9);
+  transition:
+    border-color 0.3s ease,
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.bento-card:hover {
+  border-color: rgb(255 255 255 / 0.2);
+  transform: translateY(-2px);
+  box-shadow: 0 24px 48px -24px rgb(34 211 238 / 0.12);
+}
+
+.bento-3d {
+  transform-style: preserve-3d;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bento-3d {
+    transform: none !important;
+  }
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 9999px;
+  border: 1px solid rgb(255 255 255 / 0.14);
+  background: rgb(0 0 0 / 0.45);
+  padding: 0.35rem 0.75rem;
+  font-size: 0.72rem;
+  letter-spacing: 0.02em;
+  color: #e4e4e7;
+}
+
+.icon-btn {
+  display: inline-flex;
+  height: 2.75rem;
+  width: 2.75rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  border: 1px solid rgb(255 255 255 / 0.12);
+  color: #e4e4e7;
+  transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+}
+
+.icon-btn:hover {
+  background: rgb(255 255 255 / 0.06);
+  border-color: rgb(255 255 255 / 0.25);
+  transform: translateY(-1px);
+}
+
+.pulse-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 9999px;
+  background: #4ade80;
+  box-shadow: 0 0 0 0 rgb(74 222 128 / 0.45);
+  animation: pulse 1.8s ease-out infinite;
+}
+
+@keyframes pulse {
+  70% {
+    box-shadow: 0 0 0 8px transparent;
+  }
+}
+
+.marquee {
+  overflow: hidden;
+  mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+}
+
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee 28s linear infinite;
+}
+
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.modal-backdrop {
+  background: rgb(0 0 0 / 0.75);
+  backdrop-filter: blur(10px);
+}
+
+.glow-orb {
+  pointer-events: none;
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(80px);
+  opacity: 0.35;
+}
+
+.tech-node {
+  transition:
+    box-shadow 0.25s ease,
+    border-color 0.25s ease,
+    background 0.25s ease;
+}
+
+.tech-node:hover {
+  border-color: rgb(255 255 255 / 0.28);
+}
+
+.glow-cyan:hover {
+  box-shadow:
+    0 0 0 1px rgb(34 211 238 / 0.2),
+    0 12px 36px -10px rgb(34 211 238 / 0.45);
+}
+
+.glow-purple:hover {
+  box-shadow:
+    0 0 0 1px rgb(167 139 250 / 0.22),
+    0 12px 36px -10px rgb(139 92 246 / 0.45);
+}
+
+.glow-blue:hover {
+  box-shadow:
+    0 0 0 1px rgb(96 165 250 / 0.22),
+    0 12px 36px -10px rgb(59 130 246 / 0.45);
+}
+
+.glow-orange:hover {
+  box-shadow:
+    0 0 0 1px rgb(251 146 60 / 0.22),
+    0 12px 36px -10px rgb(249 115 22 / 0.4);
 }
