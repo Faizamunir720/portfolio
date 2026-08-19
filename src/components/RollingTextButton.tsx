@@ -5,7 +5,8 @@ import { ChevronRight } from "lucide-react";
 import {
   useRef,
   useState,
-  type ComponentPropsWithoutRef,
+  type AnchorHTMLAttributes,
+  type ButtonHTMLAttributes,
   type ReactNode,
 } from "react";
 import { cn } from "@/lib/utils";
@@ -36,12 +37,12 @@ type SharedProps = {
 };
 
 type AsButton = SharedProps &
-  Omit<ComponentPropsWithoutRef<"button">, "children" | "className"> & {
+  Omit<ButtonHTMLAttributes<HTMLButtonElement>, "children" | "className"> & {
     href?: undefined;
   };
 
 type AsLink = SharedProps &
-  Omit<ComponentPropsWithoutRef<"a">, "children" | "className"> & {
+  Omit<AnchorHTMLAttributes<HTMLAnchorElement>, "children" | "className"> & {
     href: string;
   };
 
@@ -108,10 +109,7 @@ export function RollingTextButton(props: RollingTextButtonProps) {
 
   const content = (
     <span
-      className={cn(
-        "inline-flex items-center gap-2",
-        contentClassName,
-      )}
+      className={cn("inline-flex items-center gap-2", contentClassName)}
       aria-hidden="true"
     >
       {icon}
@@ -144,52 +142,56 @@ export function RollingTextButton(props: RollingTextButtonProps) {
     </span>
   );
 
-  const interaction = {
-    onHoverStart: () => {
-      hovered.current = true;
-      requestActive(true);
-    },
-    onHoverEnd: () => {
-      hovered.current = false;
-      requestActive(focused.current);
-    },
-    onFocus: () => {
-      focused.current = true;
-      requestActive(true);
-    },
-    onBlur: () => {
-      focused.current = false;
-      requestActive(hovered.current);
-    },
+  const onMouseEnter = () => {
+    hovered.current = true;
+    requestActive(true);
+  };
+  const onMouseLeave = () => {
+    hovered.current = false;
+    requestActive(focused.current);
+  };
+  const onFocus = () => {
+    focused.current = true;
+    requestActive(true);
+  };
+  const onBlur = () => {
+    focused.current = false;
+    requestActive(hovered.current);
   };
 
   const classes = cn("inline-flex cursor-pointer items-center", className);
 
   if ("href" in props && props.href != null) {
-    const { href, ...anchorRest } = rest as AsLink;
+    const { href, ...anchorRest } = rest as Omit<AsLink, keyof SharedProps>;
     return (
-      <motion.a
+      <a
         href={href}
         className={classes}
         aria-label={props["aria-label"] ?? label}
-        {...interaction}
+        onMouseEnter={onMouseEnter}
+        onMouseLeave={onMouseLeave}
+        onFocus={onFocus}
+        onBlur={onBlur}
         {...anchorRest}
       >
         {content}
-      </motion.a>
+      </a>
     );
   }
 
-  const buttonRest = rest as AsButton;
+  const buttonRest = rest as Omit<AsButton, keyof SharedProps>;
   return (
-    <motion.button
+    <button
       type={buttonRest.type ?? "button"}
       className={classes}
       aria-label={props["aria-label"] ?? label}
-      {...interaction}
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
+      onFocus={onFocus}
+      onBlur={onBlur}
       {...buttonRest}
     >
       {content}
-    </motion.button>
+    </button>
   );
 }
