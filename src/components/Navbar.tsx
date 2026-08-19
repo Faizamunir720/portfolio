@@ -4,7 +4,6 @@ import { useEffect, useRef, useState } from "react";
 import { Mail } from "lucide-react";
 import { contact } from "@/data/site";
 import { GitHubIcon, LinkedInIcon } from "@/components/SocialIcons";
-import { ThemeSwitcher } from "@/components/ThemeSwitcher";
 
 const links = [
   { href: "#hero", label: "Home" },
@@ -129,7 +128,6 @@ export function Navbar() {
           ))}
         </ul>
         <div className="flex items-center gap-2">
-          <ThemeSwitcher variant="cosmic" />
           <a
             href={contact.github}
             target="_blank"

@@ -12,9 +12,9 @@ import {
 import {
   DEFAULT_THEME,
   THEME_STORAGE_KEY,
-  isThemeId,
   type ThemeId,
 } from "@/themes/registry";
+import { COSMIC_PALETTE_KEY, getCosmicPalette } from "@/themes/cosmic/palettes";
 
 type ThemeContextValue = {
   theme: ThemeId;
@@ -27,31 +27,38 @@ const ThemeContext = createContext<ThemeContextValue | null>(null);
 function applyTheme(id: ThemeId) {
   const root = document.documentElement;
   root.setAttribute("data-theme", id);
-  root.style.colorScheme =
-    id === "studio" ? "light" : "dark";
+  root.style.colorScheme = id === "studio" ? "light" : "dark";
 
-  // Cosmic palette lab is Cosmic-only  -  clear its attr when leaving Cosmic
-  // so Studio/Pixel don't inherit tester overrides.
-  if (id !== "cosmic") {
-    root.removeAttribute("data-cosmic-palette");
-    [
-      "--cp-ink",
-      "--cp-ink-soft",
-      "--cp-paper",
-      "--cp-card",
-      "--cp-cta",
-      "--cp-cta-fg",
-      "--cp-accent",
-      "--cp-accent-2",
-      "--cp-chip",
-      "--cp-nav",
-      "--cp-selection-bg",
-      "--cp-selection-fg",
-      "--cp-pulse",
-      "--cp-soft-panel",
-      "--cp-sage",
-    ].forEach((k) => root.style.removeProperty(k));
+  // Live site: Cosmic default only — reset palette-lab overrides
+  if (id === "cosmic") {
+    const original = getCosmicPalette("original");
+    root.setAttribute("data-cosmic-palette", "original");
+    root.style.colorScheme = original.mode;
+    Object.entries(original.vars).forEach(([key, value]) => {
+      root.style.setProperty(key, value);
+    });
+    return;
   }
+
+  // Leaving Cosmic — clear tester overrides so Pixel/Studio stay clean
+  root.removeAttribute("data-cosmic-palette");
+  [
+    "--cp-ink",
+    "--cp-ink-soft",
+    "--cp-paper",
+    "--cp-card",
+    "--cp-cta",
+    "--cp-cta-fg",
+    "--cp-accent",
+    "--cp-accent-2",
+    "--cp-chip",
+    "--cp-nav",
+    "--cp-selection-bg",
+    "--cp-selection-fg",
+    "--cp-pulse",
+    "--cp-soft-panel",
+    "--cp-sage",
+  ].forEach((k) => root.style.removeProperty(k));
 }
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
@@ -59,10 +66,11 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
-    const stored = localStorage.getItem(THEME_STORAGE_KEY);
-    const next = isThemeId(stored) ? stored : DEFAULT_THEME;
-    setThemeState(next);
-    applyTheme(next);
+    // Live site locks Cosmic default; clear saved palette-lab / alternate themes
+    localStorage.setItem(THEME_STORAGE_KEY, DEFAULT_THEME);
+    localStorage.removeItem(COSMIC_PALETTE_KEY);
+    setThemeState(DEFAULT_THEME);
+    applyTheme(DEFAULT_THEME);
     setReady(true);
   }, []);
 

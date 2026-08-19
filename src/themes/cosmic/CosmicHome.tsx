@@ -6,7 +6,6 @@ import { Navbar } from "@/components/Navbar";
 import { AcademicDisciplines } from "@/components/disciplines/AcademicDisciplines";
 import { Projects } from "@/components/Projects";
 import { CosmicFooter } from "@/themes/cosmic/CosmicFooter";
-import { CosmicPaletteTester } from "@/themes/cosmic/CosmicPaletteTester";
 import { CosmicSmoothScroll } from "@/themes/cosmic/CosmicSmoothScroll";
 
 /**
@@ -24,14 +23,13 @@ export function CosmicHome() {
         <main className="relative w-full bg-[var(--background)]">
           <Experience />
           <Education />
-          <EngineeringLessons />
           <Projects />
           <AcademicDisciplines />
+          <EngineeringLessons />
         </main>
       </div>
 
       <CosmicFooter />
-      <CosmicPaletteTester />
     </>
   );
 }
