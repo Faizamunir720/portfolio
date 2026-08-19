@@ -14,11 +14,11 @@ export function Education() {
       className="relative overflow-hidden border-t border-[var(--hairline)] bg-[var(--background)]"
       aria-labelledby="education-heading"
     >
-      <div className="cosmic-band-inner relative py-14 lg:py-20">
+      <div className="cosmic-band-inner relative py-10 sm:py-14 lg:py-20">
         <motion.div
           initial={reduce ? false : { opacity: 0, y: 16 }}
           whileInView={reduce ? undefined : { opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.4 }}
+          viewport={{ once: true, amount: 0.2 }}
           transition={{ duration: 0.45, ease: easeOut }}
         >
           <p className="font-[family-name:var(--font-ibm-plex-mono)] text-[12px] font-semibold uppercase tracking-[0.18em] text-[var(--cp-accent-2,var(--cp-accent))]">
@@ -26,20 +26,20 @@ export function Education() {
           </p>
           <h2
             id="education-heading"
-            className="mt-4 max-w-[18ch] text-[clamp(2rem,5vw,3.5rem)] font-semibold leading-[1.02] tracking-tight text-[var(--cp-ink,var(--foreground))]"
+            className="mt-3 max-w-[18ch] text-[clamp(1.75rem,6vw,3.5rem)] font-semibold leading-[1.02] tracking-tight text-[var(--cp-ink,var(--foreground))] sm:mt-4"
           >
             {education.role}
           </h2>
-          <p className="mt-5 max-w-[52ch] text-[16px] leading-[1.7] text-[var(--cp-ink-soft,var(--muted))] sm:text-[17px]">
+          <p className="mt-3 max-w-[52ch] text-[15px] leading-[1.65] text-[var(--cp-ink-soft,var(--muted))] sm:mt-5 sm:text-[17px]">
             {education.points[0]}
           </p>
         </motion.div>
 
         <motion.dl
-          className="mt-10 grid grid-cols-1 gap-6 border-y border-[var(--hairline)] py-6 sm:grid-cols-2 sm:gap-10"
+          className="mt-6 grid grid-cols-1 gap-5 border-y border-[var(--hairline)] py-5 sm:mt-10 sm:grid-cols-2 sm:gap-10 sm:py-6"
           initial={reduce ? false : { opacity: 0, y: 12 }}
           whileInView={reduce ? undefined : { opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.5 }}
+          viewport={{ once: true, amount: 0.15 }}
           transition={{ duration: 0.4, delay: 0.05, ease: easeOut }}
         >
           <div>

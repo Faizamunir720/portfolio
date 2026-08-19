@@ -44,13 +44,13 @@ export function CareerlabPanel() {
   const score = burnout ? 62 : 87;
 
   return (
-    <div className="grid h-full grid-cols-12 gap-3 lg:auto-rows-[minmax(0,1fr)] lg:gap-4">
+    <div className="grid min-h-0 grid-cols-12 gap-2 sm:gap-3 lg:h-full lg:auto-rows-[minmax(0,1fr)] lg:gap-4">
       <ProjectShots
         title="CAREERLAB Screens"
         images={careerlab.media.gallery}
         className="col-span-12 lg:col-span-4"
       />
-      <BentoCard className="col-span-12 flex h-full min-h-0 flex-col overflow-hidden lg:col-span-8">
+      <BentoCard className="col-span-12 flex min-h-[160px] flex-col overflow-hidden lg:col-span-8 lg:h-full lg:min-h-0">
         <div className="mb-3 flex items-center gap-2 border-b border-[var(--hairline)] pb-3">
           <span className="h-2 w-2 rounded-full bg-[color-mix(in_srgb,var(--cp-ink)_35%,transparent)]" />
           <span className="h-2 w-2 rounded-full bg-[color-mix(in_srgb,var(--cp-ink)_25%,transparent)]" />

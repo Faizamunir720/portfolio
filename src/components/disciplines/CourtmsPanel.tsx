@@ -43,7 +43,7 @@ export function CourtmsPanel() {
   }, []);
 
   return (
-    <div className="grid h-full grid-cols-12 gap-3 lg:auto-rows-[minmax(0,1fr)] lg:gap-4">
+    <div className="grid min-h-0 grid-cols-12 gap-2 sm:gap-3 lg:h-full lg:auto-rows-[minmax(0,1fr)] lg:gap-4">
       <ProjectShots
         title="CourtMS Screens"
         images={courtms.media.gallery}
@@ -54,13 +54,13 @@ export function CourtmsPanel() {
         <p className={`mt-1 ${panelMuted}`}>
           Handler-enforced transitions across the court queue
         </p>
-        <div className="mt-4 flex flex-wrap gap-2">
+        <div className="mt-3 flex flex-wrap gap-1.5 sm:mt-4 sm:gap-2">
           {steps.map((label, i) => (
             <button
               key={label}
               type="button"
               onMouseEnter={() => setActive(i)}
-              className="relative px-3 py-2 text-xs font-medium text-[var(--cp-ink,var(--foreground))]"
+              className="relative px-2.5 py-1.5 text-[11px] font-medium text-[var(--cp-ink,var(--foreground))] sm:px-3 sm:py-2 sm:text-xs"
             >
               {active === i ? (
                 <motion.span

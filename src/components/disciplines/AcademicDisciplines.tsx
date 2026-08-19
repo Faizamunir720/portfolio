@@ -135,12 +135,12 @@ export function AcademicDisciplines() {
       {/* Full-viewport sticky stage — cards own the height */}
       <div className="sticky top-0 flex h-dvh flex-col overflow-hidden">
         {/* Compact chrome (replaces tall section heading) */}
-        <div className="cosmic-band-inner flex shrink-0 items-center justify-between gap-4 border-b border-[var(--hairline)] py-3">
+        <div className="cosmic-band-inner flex shrink-0 items-center justify-between gap-3 border-b border-[var(--hairline)] py-2.5 sm:gap-4 sm:py-3">
           <div className="min-w-0">
-            <p className="font-[family-name:var(--font-ibm-plex-mono)] text-[13px] font-semibold uppercase tracking-[0.16em] text-[var(--cp-accent-2,var(--cp-accent))] sm:text-sm">
+            <p className="font-[family-name:var(--font-ibm-plex-mono)] text-[11px] font-semibold uppercase tracking-[0.14em] text-[var(--cp-accent-2,var(--cp-accent))] sm:text-sm sm:tracking-[0.16em]">
               Engineering journey
             </p>
-            <p className="mt-0.5 truncate text-sm text-[var(--cp-ink-soft,var(--muted))]">
+            <p className="mt-0.5 line-clamp-2 text-[12px] leading-snug text-[var(--cp-ink-soft,var(--muted))] sm:line-clamp-1 sm:text-sm">
               <span className="text-[var(--cp-ink,var(--foreground))]">
                 {active.title}
               </span>
@@ -150,12 +150,12 @@ export function AcademicDisciplines() {
               </span>
             </p>
           </div>
-          <div className="flex shrink-0 items-center gap-3">
+          <div className="flex shrink-0 items-center gap-2 sm:gap-3">
             <span className="font-[family-name:var(--font-ibm-plex-mono)] text-[11px] tabular-nums text-[var(--cp-ink-soft,var(--muted))]">
               {String(activeIdx + 1).padStart(2, "0")}/
               {String(courseworkItems.length).padStart(2, "0")}
             </span>
-            <div className="h-px w-24 overflow-hidden bg-[color-mix(in_srgb,var(--cp-ink)_12%,transparent)] sm:w-36">
+            <div className="h-px w-14 overflow-hidden bg-[color-mix(in_srgb,var(--cp-ink)_12%,transparent)] sm:w-36">
               <motion.div
                 className="h-full origin-left bg-[var(--cp-accent)]"
                 style={{ scaleX: reduce ? 1 : progressScale }}
@@ -174,7 +174,7 @@ export function AcademicDisciplines() {
           <motion.div
             ref={trackRef}
             style={reduce ? undefined : { x }}
-            className="flex h-full gap-5 px-[clamp(1.25rem,4vw,3rem)] sm:gap-6"
+            className="flex h-full gap-3 px-[clamp(1rem,4vw,3rem)] sm:gap-6"
           >
             {courseworkItems.map((item, idx) => {
               const Panel = item.Panel;
@@ -184,14 +184,14 @@ export function AcademicDisciplines() {
               return (
                 <article
                   key={item.id}
-                  className="flex h-full w-[min(92vw,1040px)] shrink-0 flex-col overflow-hidden border border-[var(--hairline)] bg-[var(--background)]"
+                  className="flex h-full w-[min(94vw,1040px)] shrink-0 flex-col overflow-hidden border border-[var(--hairline)] bg-[var(--background)]"
                 >
-                  <header className="flex shrink-0 items-start justify-between gap-4 border-b border-[var(--hairline)] px-4 py-3 sm:px-5 sm:py-3.5">
+                  <header className="flex shrink-0 items-start justify-between gap-3 border-b border-[var(--hairline)] px-3 py-2.5 sm:gap-4 sm:px-5 sm:py-3.5">
                     <div className="min-w-0">
-                      <p className="font-[family-name:var(--font-ibm-plex-mono)] text-[11px] uppercase tracking-[0.14em] text-[var(--cp-accent-2,var(--cp-accent))]">
+                      <p className="font-[family-name:var(--font-ibm-plex-mono)] text-[10px] uppercase leading-snug tracking-[0.12em] text-[var(--cp-accent-2,var(--cp-accent))] sm:text-[11px] sm:tracking-[0.14em]">
                         {String(idx + 1).padStart(2, "0")} // {item.category}
                       </p>
-                      <h3 className="mt-1 flex items-center gap-2 text-lg font-semibold tracking-tight text-[var(--cp-ink,var(--foreground))] sm:text-xl">
+                      <h3 className="mt-1 flex items-center gap-2 text-base font-semibold tracking-tight text-[var(--cp-ink,var(--foreground))] sm:text-xl">
                         <Icon
                           size={16}
                           className="shrink-0 text-[var(--cp-accent)]"
@@ -199,17 +199,17 @@ export function AcademicDisciplines() {
                         />
                         {item.title}
                       </h3>
-                      <p className="mt-1 line-clamp-1 text-[13px] text-[var(--cp-ink-soft,var(--muted))]">
+                      <p className="mt-1 line-clamp-2 text-[12px] leading-snug text-[var(--cp-ink-soft,var(--muted))] sm:line-clamp-1 sm:text-[13px]">
                         {item.subtitle}
                       </p>
                     </div>
-                    <span className="font-[family-name:var(--font-ibm-plex-mono)] text-[11px] tabular-nums text-[var(--cp-ink-soft,var(--muted))]">
+                    <span className="hidden font-[family-name:var(--font-ibm-plex-mono)] text-[11px] tabular-nums text-[var(--cp-ink-soft,var(--muted))] sm:inline">
                       {idx + 1}/{courseworkItems.length}
                     </span>
                   </header>
 
-                  {/* Full remaining height — no inner scrollbar */}
-                  <div className="min-h-0 flex-1 overflow-hidden px-3 py-3 sm:px-4 sm:py-4">
+                  {/* Mobile: scroll panel content; desktop: fill without scrollbar */}
+                  <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-2.5 py-2.5 sm:overflow-hidden sm:px-4 sm:py-4">
                     {shouldMount ? (
                       <Panel />
                     ) : (

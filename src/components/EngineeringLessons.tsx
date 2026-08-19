@@ -21,8 +21,8 @@ const springSoft = {
 };
 
 /**
- * Lessons — sticky process stack + kinetic type.
- * Active index drives the sticky tracker and dot rail (no scroll-offset keyframes).
+ * Lessons — sticky process stack on md+, compact stacked cards on mobile.
+ * Active index drives the sticky tracker (no scroll-offset keyframes).
  */
 export function EngineeringLessons() {
   const reduce = useReducedMotion();
@@ -51,13 +51,13 @@ export function EngineeringLessons() {
       aria-labelledby="lessons-heading"
     >
       <div className="pointer-events-none sticky top-0 z-30 border-b border-[var(--hairline)] bg-[var(--background)]">
-        <div className="cosmic-band-inner flex h-12 items-center justify-between gap-4">
+        <div className="cosmic-band-inner flex h-11 items-center justify-between gap-3 sm:h-12 sm:gap-4">
           <motion.p
             key={current.title}
             initial={reduce ? false : { opacity: 0, y: 6 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.25, ease: easeOut }}
-            className="min-w-0 truncate font-[family-name:var(--font-ibm-plex-mono)] text-[11px] font-medium uppercase tracking-[0.14em] text-[var(--cp-ink,var(--foreground))] sm:text-[12px]"
+            className="min-w-0 truncate font-[family-name:var(--font-ibm-plex-mono)] text-[10px] font-medium uppercase tracking-[0.12em] text-[var(--cp-ink,var(--foreground))] sm:text-[12px] sm:tracking-[0.14em]"
           >
             <span className="text-[var(--cp-accent-2,var(--cp-accent))]">
               {String(active + 1).padStart(2, "0")}
@@ -65,12 +65,12 @@ export function EngineeringLessons() {
             <span className="text-[var(--cp-ink-soft,var(--muted))]"> — </span>
             {current.title.replace(/\.$/, "")}
           </motion.p>
-          <div className="flex shrink-0 items-center gap-3">
+          <div className="flex shrink-0 items-center gap-2 sm:gap-3">
             <span className="font-[family-name:var(--font-ibm-plex-mono)] text-[11px] tabular-nums text-[var(--cp-ink-soft,var(--muted))]">
               {String(active + 1).padStart(2, "0")}/
               {String(engineeringLessons.length).padStart(2, "0")}
             </span>
-            <div className="h-px w-16 overflow-hidden bg-[color-mix(in_srgb,var(--cp-ink)_12%,transparent)] sm:w-24">
+            <div className="h-px w-12 overflow-hidden bg-[color-mix(in_srgb,var(--cp-ink)_12%,transparent)] sm:w-24">
               <motion.div
                 className="h-full origin-left bg-[var(--cp-accent)]"
                 style={{ scaleX: reduce ? 1 : progress }}
@@ -80,11 +80,11 @@ export function EngineeringLessons() {
         </div>
       </div>
 
-      <div className="cosmic-band-inner pt-14 pb-6 lg:pt-20">
+      <div className="cosmic-band-inner pt-10 pb-4 sm:pt-14 sm:pb-6 lg:pt-20">
         <motion.div
           initial={reduce ? false : { opacity: 0, y: 18 }}
           whileInView={reduce ? undefined : { opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.6 }}
+          viewport={{ once: true, amount: 0.35 }}
           transition={{ duration: 0.5, ease: easeOut }}
           className="max-w-4xl"
         >
@@ -93,7 +93,7 @@ export function EngineeringLessons() {
           </p>
           <h2
             id="lessons-heading"
-            className="mt-3 text-[clamp(2rem,5vw,3.5rem)] font-semibold leading-[0.98] tracking-tight text-[var(--cp-ink,var(--foreground))]"
+            className="mt-3 text-[clamp(1.75rem,6vw,3.5rem)] font-semibold leading-[0.98] tracking-tight text-[var(--cp-ink,var(--foreground))]"
           >
             What Software Engineering
             <br className="hidden sm:block" /> Taught Me
@@ -101,7 +101,22 @@ export function EngineeringLessons() {
         </motion.div>
       </div>
 
-      <div className="relative">
+      {/* Mobile: content-height cards — no 85vh empty sticky panes */}
+      <div className="relative md:hidden">
+        {engineeringLessons.map((lesson, i) => (
+          <MobileLessonCard
+            key={lesson.title}
+            index={i}
+            total={engineeringLessons.length}
+            title={lesson.title}
+            body={lesson.body}
+            active={active}
+          />
+        ))}
+      </div>
+
+      {/* Desktop / tablet: original sticky stack */}
+      <div className="relative hidden md:block">
         {engineeringLessons.map((lesson, i) => (
           <LessonCard
             key={lesson.title}
@@ -115,6 +130,63 @@ export function EngineeringLessons() {
         ))}
       </div>
     </section>
+  );
+}
+
+function MobileLessonCard({
+  index,
+  total,
+  title,
+  body,
+  active,
+}: {
+  index: number;
+  total: number;
+  title: string;
+  body: string;
+  active: number;
+}) {
+  const isOdd = index % 2 === 1;
+
+  return (
+    <article
+      className={cn(
+        "border-y border-[var(--hairline)]",
+        isOdd
+          ? "bg-[color-mix(in_srgb,var(--cp-accent)_7%,var(--background))]"
+          : "bg-[var(--background)]",
+      )}
+      style={{ zIndex: index + 1 }}
+    >
+      <div className="cosmic-band-inner relative py-8">
+        <p
+          aria-hidden
+          className="pointer-events-none absolute right-4 top-4 select-none font-[family-name:var(--font-ibm-plex-mono)] text-[4.5rem] font-semibold leading-none tracking-tighter text-[color-mix(in_srgb,var(--cp-ink)_7%,transparent)]"
+        >
+          {String(index + 1).padStart(2, "0")}
+        </p>
+        <p className="font-[family-name:var(--font-ibm-plex-mono)] text-[12px] font-medium tabular-nums text-[var(--cp-accent-2,var(--cp-accent))]">
+          {String(index + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}
+        </p>
+        <h3 className="mt-3 max-w-[18ch] text-[clamp(1.45rem,6.5vw,2rem)] font-semibold leading-[1.08] tracking-tight text-[var(--cp-ink,var(--foreground))]">
+          {title}
+        </h3>
+        <p className="mt-3 max-w-[46ch] text-[15px] leading-[1.65] text-[var(--cp-ink-soft,var(--muted))]">
+          {body}
+        </p>
+        <div className="mt-6 flex gap-1.5" aria-hidden>
+          {Array.from({ length: total }).map((_, dot) => (
+            <span
+              key={dot}
+              className={cn(
+                "h-1 rounded-full bg-[var(--cp-accent)] transition-all duration-300",
+                dot === active ? "w-6 opacity-100" : "w-2 opacity-30",
+              )}
+            />
+          ))}
+        </div>
+      </div>
+    </article>
   );
 }
 

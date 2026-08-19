@@ -36,7 +36,7 @@ export function LahoreAvmPanel() {
   const [showComps, setShowComps] = useState(false);
 
   return (
-    <div className="grid h-full grid-cols-12 gap-3 lg:auto-rows-[minmax(0,1fr)] lg:gap-4">
+    <div className="grid min-h-0 grid-cols-12 gap-2 sm:gap-3 lg:h-full lg:auto-rows-[minmax(0,1fr)] lg:gap-4">
       <ProjectShots
         title="Lahore AVM Screens"
         images={lahoreAvm.media.gallery}

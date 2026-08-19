@@ -91,7 +91,9 @@
 }
 
 .footer-wordmark {
-  font-size: clamp(2.25rem, 11vw, 7.5rem);
+  font-size: clamp(1.75rem, 12vw, 7.5rem);
+  max-width: 100%;
+  overflow-wrap: anywhere;
   -webkit-text-size-adjust: 100%;
   text-rendering: geometricPrecision;
 }
@@ -547,6 +549,44 @@ html[data-cosmic-palette] h1,
 html[data-cosmic-palette] h2,
 html[data-cosmic-palette] h3 {
   color: var(--cp-ink) !important;
+}
+
+/*
+  Hero split field: title sits on LIGHT cells, lede on DARK cells.
+  Must beat the palette h1 → --cp-ink (light) override above.
+*/
+html[data-cosmic-palette] #hero h1.hero-title,
+#hero h1.hero-title {
+  color: var(--hero-dark) !important;
+  -webkit-text-fill-color: var(--hero-dark);
+}
+
+html[data-cosmic-palette] #hero .hero-lede,
+#hero .hero-lede {
+  color: var(--hero-light) !important;
+}
+
+html[data-cosmic-palette] #hero .hero-cta-fill {
+  background: var(--hero-dark) !important;
+  color: var(--hero-light) !important;
+}
+
+html[data-cosmic-palette] #hero .hero-cta-ghost,
+html[data-cosmic-palette] #hero .hero-social {
+  border-color: color-mix(in srgb, var(--hero-dark) 28%, transparent) !important;
+  color: var(--hero-dark) !important;
+  background: var(--hero-light) !important;
+}
+
+/* Brand + icons stay dark while over the light hero field */
+html[data-cosmic-palette] header.fixed.cosmic-nav-top,
+html[data-cosmic-palette] header.fixed.cosmic-nav-top a {
+  color: var(--hero-dark) !important;
+}
+
+html[data-cosmic-palette] header.fixed.cosmic-nav-top a[aria-label] {
+  border-color: color-mix(in srgb, var(--hero-dark) 22%, transparent) !important;
+  color: var(--hero-dark) !important;
 }
 
 /* Cyan accents read as wash on cream — map to palette accent */

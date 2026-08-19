@@ -118,9 +118,9 @@ export function Experience() {
         className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top_left,color-mix(in_srgb,var(--cp-accent)_10%,transparent),transparent_55%)]"
       />
 
-      <div className="cosmic-band-inner relative py-14 lg:py-20">
+      <div className="cosmic-band-inner relative py-10 sm:py-14 lg:py-20">
         {/* Eyebrow row */}
-        <div className="mb-8 flex flex-wrap items-end justify-between gap-3 border-b border-[var(--hairline)] pb-5">
+        <div className="mb-6 flex flex-wrap items-end justify-between gap-3 border-b border-[var(--hairline)] pb-4 sm:mb-8 sm:pb-5">
           <p className="font-[family-name:var(--font-ibm-plex-mono)] text-[12px] font-medium uppercase tracking-[0.18em] text-[var(--cp-accent-2,var(--cp-accent))]">
             {job.title}
           </p>
@@ -167,7 +167,7 @@ export function Experience() {
                         animate={{ opacity: 1, scale: 1 }}
                         exit={{ opacity: 0, scale: 0.96 }}
                         transition={layoutSpring}
-                        className="group relative flex min-h-[7.5rem] flex-col justify-between overflow-hidden border border-[var(--hairline)] bg-[var(--cp-card,var(--background))] px-3.5 py-3 sm:min-h-[8rem] sm:px-4 sm:py-3.5"
+                        className="group relative flex min-h-[6.75rem] flex-col justify-between overflow-hidden border border-[var(--hairline)] bg-[var(--cp-card,var(--background))] px-3 py-2.5 sm:min-h-[8rem] sm:px-4 sm:py-3.5"
                         style={{ transformStyle: "preserve-3d" }}
                         whileHover={
                           reduce
@@ -236,8 +236,8 @@ export function Experience() {
               </p>
             </div>
 
-            {/* Featured note — flex-1 so it absorbs column height */}
-            <div className="relative mt-5 min-h-[180px] flex-1 overflow-hidden border border-[var(--hairline)] bg-[var(--cp-card,color-mix(in_srgb,var(--foreground)_3%,transparent))] sm:min-h-[220px]">
+            {/* Featured note — auto height on mobile; flex-1 on lg so columns match */}
+            <div className="relative mt-4 overflow-hidden border border-[var(--hairline)] bg-[var(--cp-card,color-mix(in_srgb,var(--foreground)_3%,transparent))] sm:mt-5 sm:min-h-[200px] lg:min-h-[220px] lg:flex-1">
               <AnimatePresence mode="wait" initial={false}>
                 <motion.div
                   key={job.contributions[activeNote]}
@@ -245,20 +245,47 @@ export function Experience() {
                   animate={{ opacity: 1, x: 0 }}
                   exit={reduce ? undefined : { opacity: 0, x: -24 }}
                   transition={{ duration: 0.28, ease: easeOut }}
-                  className="absolute inset-0 flex flex-col justify-center p-6 sm:p-8"
+                  className="flex flex-col justify-center p-5 sm:absolute sm:inset-0 sm:p-8"
                 >
                   <p className="font-[family-name:var(--font-ibm-plex-mono)] text-[12px] font-medium tabular-nums text-[var(--cp-accent-2,var(--cp-accent))]">
                     {String(activeNote + 1).padStart(2, "0")}
                   </p>
-                  <p className="mt-4 max-w-[46ch] text-[17px] leading-relaxed text-[var(--cp-ink,var(--foreground))] sm:text-[18px]">
+                  <p className="mt-3 max-w-[46ch] text-[15px] leading-relaxed text-[var(--cp-ink,var(--foreground))] sm:mt-4 sm:text-[18px]">
                     {job.contributions[activeNote]}
                   </p>
                 </motion.div>
               </AnimatePresence>
             </div>
 
-            {/* Index rail */}
-            <ul className="mt-4 grid grid-cols-1 gap-1.5 sm:grid-cols-2">
+            {/* Mobile: number chips only — avoid truncated dual-column congestion */}
+            <div
+              className="mt-3 flex flex-wrap gap-2 sm:hidden"
+              role="tablist"
+              aria-label="Contribution index"
+            >
+              {job.contributions.map((_, i) => {
+                const active = i === activeNote;
+                return (
+                  <button
+                    key={i}
+                    type="button"
+                    role="tab"
+                    aria-selected={active}
+                    onClick={() => setActiveNote(i)}
+                    className={`inline-flex h-10 min-w-10 items-center justify-center border px-2.5 font-[family-name:var(--font-ibm-plex-mono)] text-[12px] font-medium tabular-nums transition ${
+                      active
+                        ? "border-[color-mix(in_srgb,var(--cp-accent)_45%,transparent)] bg-[color-mix(in_srgb,var(--cp-accent)_10%,transparent)] text-[var(--cp-accent-2,var(--cp-accent))]"
+                        : "border-[var(--hairline)] text-[var(--cp-ink-soft,var(--muted))]"
+                    }`}
+                  >
+                    {String(i + 1).padStart(2, "0")}
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* sm+: index rail with readable copy */}
+            <ul className="mt-4 hidden gap-1.5 sm:grid sm:grid-cols-2">
               {job.contributions.map((point, i) => {
                 const active = i === activeNote;
                 return (
@@ -296,7 +323,7 @@ export function Experience() {
               })}
             </ul>
 
-            <p className="mt-5 border-t border-[var(--hairline)] pt-4 font-[family-name:var(--font-ibm-plex-mono)] text-[11px] font-medium uppercase tracking-[0.12em] text-[var(--cp-ink-soft,var(--muted))]">
+            <p className="mt-4 border-t border-[var(--hairline)] pt-3 font-[family-name:var(--font-ibm-plex-mono)] text-[10px] font-medium uppercase leading-relaxed tracking-[0.1em] text-[var(--cp-ink-soft,var(--muted))] sm:mt-5 sm:pt-4 sm:text-[11px] sm:tracking-[0.12em]">
               {job.technologies.join(" · ")}
             </p>
           </div>
