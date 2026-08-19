@@ -1,21 +1,65 @@
+"use client";
+
+import { motion, useReducedMotion } from "framer-motion";
 import { education } from "@/data/site";
-import { Reveal } from "@/components/Reveal";
+
+const easeOut = [0.22, 1, 0.36, 1] as const;
 
 export function Education() {
+  const reduce = useReducedMotion();
+
   return (
-    <Reveal className="h-full" delay={60}>
-      <article className="bento-card relative h-full overflow-hidden p-5 lg:p-6">
-        <div className="glow-orb -right-6 bottom-0 h-28 w-28 bg-amber-400/15" />
-        <p className="text-xs uppercase tracking-[0.18em] text-zinc-500">
-          Education
-        </p>
-        <h2 className="mt-3 text-xl font-semibold">{education.role}</h2>
-        <p className="mt-1 text-sm text-muted">{education.org}</p>
-        <p className="mt-1 font-mono text-xs text-zinc-500">{education.period}</p>
-        <p className="mt-3 text-sm leading-relaxed text-zinc-400">
-          {education.points[0]}
-        </p>
-      </article>
-    </Reveal>
+    <section
+      id="education"
+      className="relative overflow-hidden border-t border-[var(--hairline)] bg-[var(--background)]"
+      aria-labelledby="education-heading"
+    >
+      <div className="cosmic-band-inner relative py-14 lg:py-20">
+        <motion.div
+          initial={reduce ? false : { opacity: 0, y: 16 }}
+          whileInView={reduce ? undefined : { opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.4 }}
+          transition={{ duration: 0.45, ease: easeOut }}
+        >
+          <p className="font-[family-name:var(--font-ibm-plex-mono)] text-[12px] font-semibold uppercase tracking-[0.18em] text-[var(--cp-accent-2,var(--cp-accent))]">
+            Education
+          </p>
+          <h2
+            id="education-heading"
+            className="mt-4 max-w-[18ch] text-[clamp(2rem,5vw,3.5rem)] font-semibold leading-[1.02] tracking-tight text-[var(--cp-ink,var(--foreground))]"
+          >
+            {education.role}
+          </h2>
+          <p className="mt-5 max-w-[52ch] text-[16px] leading-[1.7] text-[var(--cp-ink-soft,var(--muted))] sm:text-[17px]">
+            {education.points[0]}
+          </p>
+        </motion.div>
+
+        <motion.dl
+          className="mt-10 grid grid-cols-1 gap-6 border-y border-[var(--hairline)] py-6 sm:grid-cols-2 sm:gap-10"
+          initial={reduce ? false : { opacity: 0, y: 12 }}
+          whileInView={reduce ? undefined : { opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.5 }}
+          transition={{ duration: 0.4, delay: 0.05, ease: easeOut }}
+        >
+          <div>
+            <dt className="font-[family-name:var(--font-ibm-plex-mono)] text-[11px] uppercase tracking-[0.14em] text-[var(--cp-ink-soft,var(--muted))]">
+              Institution
+            </dt>
+            <dd className="mt-2 text-[15px] font-medium leading-snug text-[var(--cp-ink,var(--foreground))] sm:text-base">
+              {education.org}
+            </dd>
+          </div>
+          <div>
+            <dt className="font-[family-name:var(--font-ibm-plex-mono)] text-[11px] uppercase tracking-[0.14em] text-[var(--cp-ink-soft,var(--muted))]">
+              Timeline
+            </dt>
+            <dd className="mt-2 text-[15px] font-medium leading-snug text-[var(--cp-ink,var(--foreground))] sm:text-base">
+              {education.period}
+            </dd>
+          </div>
+        </motion.dl>
+      </div>
+    </section>
   );
 }

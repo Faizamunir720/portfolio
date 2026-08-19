@@ -350,7 +350,7 @@ export function ParticleBackground() {
 
   return (
     <>
-      {/* Quiet depth base — low glow so UI stays readable */}
+      {/* Quiet depth base  -  low glow so UI stays readable */}
       <div
         aria-hidden
         className="pointer-events-none fixed inset-0 z-0"

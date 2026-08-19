@@ -3,8 +3,9 @@ import type { ReactNode } from "react";
 import { contact } from "@/data/site";
 import { Reveal } from "@/components/Reveal";
 import { GitHubIcon, LinkedInIcon } from "@/components/SocialIcons";
+import { RollingTextButton } from "@/components/RollingTextButton";
 
-const cards: { icon: ReactNode; label: string; value: string; href?: string }[] =
+const rows: { icon: ReactNode; label: string; value: string; href?: string }[] =
   [
     {
       icon: <MapPin size={16} className="text-zinc-400" />,
@@ -33,11 +34,12 @@ const cards: { icon: ReactNode; label: string; value: string; href?: string }[] 
 
 export function Contact() {
   return (
-    <section id="contact" className="mt-4 lg:mt-6">
-      <Reveal>
-        <article className="bento-card relative overflow-hidden p-6 sm:p-10">
-          <div className="glow-orb -right-10 -top-10 h-48 w-48 bg-cyan-400/20" />
-          <div className="glow-orb -bottom-16 left-10 h-40 w-40 bg-violet-500/20" />
+    <section
+      id="contact"
+      className="cosmic-band border-t border-[var(--hairline)]"
+    >
+      <div className="cosmic-band-inner">
+        <Reveal>
           <p className="text-xs uppercase tracking-[0.18em] text-zinc-500">
             Contact
           </p>
@@ -48,48 +50,59 @@ export function Contact() {
             Open to internships and collaborations. Prefer email or LinkedIn.
           </p>
 
-          <div className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-2">
-            {cards.map(({ icon, label, value, href }) => {
+          <div className="mt-6">
+            <RollingTextButton
+              href={`mailto:${contact.email}`}
+              label="Email me"
+              rollLabel="Let's talk"
+              className="rounded-full bg-white px-5 py-2.5 text-sm font-semibold text-black transition hover:bg-zinc-200"
+            />
+          </div>
+
+          <ul className="mt-10 divide-y divide-[var(--hairline)] border-y border-[var(--hairline)]">
+            {rows.map(({ icon, label, value, href }) => {
               const body = (
-                <div className="flex items-start gap-3">
+                <div className="flex items-center gap-4 py-4">
                   {icon}
-                  <div>
+                  <div className="min-w-0 flex-1 sm:flex sm:items-baseline sm:justify-between sm:gap-6">
                     <p className="text-xs uppercase tracking-[0.14em] text-zinc-500">
                       {label}
                     </p>
-                    <p className="mt-1 text-sm text-zinc-200">{value}</p>
+                    <p className="mt-1 truncate text-sm text-zinc-200 sm:mt-0">
+                      {value}
+                    </p>
                   </div>
                 </div>
               );
-              return href ? (
-                <a
-                  key={label}
-                  href={href}
-                  target={href.startsWith("http") ? "_blank" : undefined}
-                  rel={
-                    href.startsWith("http") ? "noopener noreferrer" : undefined
-                  }
-                  className="rounded-2xl border border-white/10 bg-black/30 p-4 transition hover:border-white/25"
-                >
-                  {body}
-                </a>
-              ) : (
-                <div
-                  key={label}
-                  className="rounded-2xl border border-white/10 bg-black/30 p-4"
-                >
-                  {body}
-                </div>
+              return (
+                <li key={label}>
+                  {href ? (
+                    <a
+                      href={href}
+                      target={href.startsWith("http") ? "_blank" : undefined}
+                      rel={
+                        href.startsWith("http")
+                          ? "noopener noreferrer"
+                          : undefined
+                      }
+                      className="block transition hover:bg-white/[0.03]"
+                    >
+                      {body}
+                    </a>
+                  ) : (
+                    body
+                  )}
+                </li>
               );
             })}
-          </div>
+          </ul>
 
-          <div className="mt-4 flex items-center gap-2 text-sm text-muted">
+          <div className="mt-6 flex items-center gap-2 text-sm text-muted">
             <Globe size={14} />
             Currently open to opportunities
           </div>
-        </article>
-      </Reveal>
+        </Reveal>
+      </div>
     </section>
   );
 }

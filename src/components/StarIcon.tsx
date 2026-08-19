@@ -1,4 +1,4 @@
-/** Minimal four-point geometric star — used as editorial accent. */
+/** Minimal four-point geometric star  -  used as editorial accent. */
 export function StarIcon({
   size = 14,
   className = "",

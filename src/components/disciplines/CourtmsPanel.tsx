@@ -10,7 +10,13 @@ import {
   SiReact,
 } from "react-icons/si";
 import { projects } from "@/data/site";
-import { BentoCard, StackIcons } from "./BentoCard";
+import {
+  BentoCard,
+  StackIcons,
+  panelLabel,
+  panelMuted,
+  panelTitle,
+} from "./BentoCard";
 import { ProjectShots } from "./ProjectShots";
 
 const courtms = projects.find((p) => p.id === "courtms")!;
@@ -37,17 +43,15 @@ export function CourtmsPanel() {
   }, []);
 
   return (
-    <div className="grid grid-cols-12 gap-4 lg:auto-rows-[minmax(220px,1fr)] lg:gap-5">
-      {/* Row 1: 4 + 8 */}
+    <div className="grid h-full grid-cols-12 gap-3 lg:auto-rows-[minmax(0,1fr)] lg:gap-4">
       <ProjectShots
         title="CourtMS Screens"
         images={courtms.media.gallery}
         className="col-span-12 lg:col-span-4"
-        accent="blue"
       />
       <BentoCard className="col-span-12 flex flex-col justify-center lg:col-span-8">
-        <p className="text-sm font-semibold">5-State Case Lifecycle</p>
-        <p className="mt-1 text-xs text-zinc-400">
+        <p className={panelTitle}>5-State Case Lifecycle</p>
+        <p className={`mt-1 ${panelMuted}`}>
           Handler-enforced transitions across the court queue
         </p>
         <div className="mt-4 flex flex-wrap gap-2">
@@ -56,16 +60,16 @@ export function CourtmsPanel() {
               key={label}
               type="button"
               onMouseEnter={() => setActive(i)}
-              className="relative rounded-full px-3 py-2 text-xs font-medium text-zinc-300"
+              className="relative px-3 py-2 text-xs font-medium text-[var(--cp-ink,var(--foreground))]"
             >
               {active === i ? (
                 <motion.span
                   layoutId="courtStatePill"
-                  className="absolute inset-0 rounded-full border border-blue-400/40 bg-blue-500/20"
+                  className="absolute inset-0 border border-[color-mix(in_srgb,var(--cp-accent)_40%,transparent)] bg-[color-mix(in_srgb,var(--cp-accent)_10%,transparent)]"
                   transition={{ type: "spring", stiffness: 380, damping: 30 }}
                 />
               ) : (
-                <span className="absolute inset-0 rounded-full border border-white/10 bg-white/[0.03]" />
+                <span className="absolute inset-0 border border-[var(--hairline)]" />
               )}
               <span className="relative z-10">
                 {i + 1}. {label}
@@ -75,24 +79,23 @@ export function CourtmsPanel() {
         </div>
       </BentoCard>
 
-      {/* Row 2: 4 + 4 + 4 */}
-      <BentoCard className="col-span-12 flex flex-col justify-center border-blue-500/25 lg:col-span-4">
+      <BentoCard className="col-span-12 flex flex-col justify-center lg:col-span-4">
         <div className="mb-3 flex items-center gap-2">
-          <span className="inline-flex h-9 w-9 items-center justify-center rounded-xl border border-blue-400/30 bg-blue-400/10 text-blue-300">
+          <span className="inline-flex h-9 w-9 items-center justify-center border border-[var(--hairline)] text-[var(--cp-accent)]">
             <Shield size={16} />
           </span>
           <div>
-            <p className="text-sm font-semibold">5-Role Boundaries</p>
-            <p className="text-xs text-zinc-400">JWT authorize portals</p>
+            <p className={panelTitle}>5-Role Boundaries</p>
+            <p className={panelMuted}>JWT authorize portals</p>
           </div>
         </div>
         <div className="grid grid-cols-2 gap-2">
           {portals.map((p) => (
             <span
               key={p}
-              className="inline-flex items-center justify-center gap-1.5 rounded-2xl border border-indigo-400/25 bg-indigo-400/10 px-2 py-2.5 text-xs font-medium text-indigo-100"
+              className="inline-flex items-center justify-center gap-1.5 border border-[var(--hairline)] bg-[color-mix(in_srgb,var(--cp-ink)_3%,transparent)] px-2 py-2.5 text-xs font-medium text-[var(--cp-ink,var(--foreground))]"
             >
-              <KeyRound size={12} />
+              <KeyRound size={12} className="text-[var(--cp-accent)]" />
               {p}
             </span>
           ))}
@@ -100,26 +103,24 @@ export function CourtmsPanel() {
       </BentoCard>
 
       <BentoCard className="col-span-12 flex flex-col justify-center lg:col-span-4">
-        <div className="mb-2 inline-flex h-9 w-9 items-center justify-center rounded-xl bg-blue-400/10 text-blue-300">
+        <div className="mb-2 inline-flex h-9 w-9 items-center justify-center border border-[var(--hairline)] text-[var(--cp-accent)]">
           <FileKey size={16} />
         </div>
-        <p className="text-sm font-semibold">JWT RBAC & Multer Gate</p>
-        <p className="mt-2 font-mono text-[11px] leading-relaxed text-cyan-200/90">
+        <p className={panelTitle}>JWT RBAC & Multer Gate</p>
+        <p className="mt-2 font-mono text-[11px] leading-relaxed text-[var(--cp-accent-2,var(--cp-accent))]">
           /api/documents/:id/download
         </p>
-        <p className="mt-2 text-xs text-zinc-400">
+        <p className={`mt-2 ${panelMuted}`}>
           Ownership filters on every gated download
         </p>
       </BentoCard>
 
       <BentoCard className="col-span-12 flex flex-col justify-center lg:col-span-4">
-        <p className="mb-3 text-xs uppercase tracking-[0.16em] text-zinc-500">
-          Stack & Database
-        </p>
+        <p className={`mb-3 ${panelLabel}`}>Stack & Database</p>
         <StackIcons
           items={[
             { name: "MongoDB", Icon: SiMongodb, color: "#47A248" },
-            { name: "Express", Icon: SiExpress, color: "#FFFFFF" },
+            { name: "Express", Icon: SiExpress, color: "#94A3B8" },
             { name: "React", Icon: SiReact, color: "#61DAFB" },
             { name: "Node.js", Icon: SiNodedotjs, color: "#339933" },
           ]}

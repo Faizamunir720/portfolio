@@ -189,11 +189,38 @@ export const experience = [
   {
     org: "Masihai Pvt Ltd",
     role: "Software Developer",
+    title: "Production Engineering",
     period: "2025 to Present",
-    points: [
-      "Developing Flutter apps with Firebase for backend integration and feature delivery.",
-      "Refactored legacy Flutter codebases into structured MVC architecture.",
-      "Day-to-day GUI enhancements, bug fixes, and Firebase integrations.",
+    stack: ["Flutter", "Appwrite", "GetX", "Cubit/Bloc", "Firebase"],
+    domains: [
+      {
+        label: "Healthcare",
+        portals: ["Administrator", "Doctor", "Patient"],
+      },
+      {
+        label: "Education",
+        portals: ["Teacher", "Student"],
+      },
+    ],
+    summary:
+      "Contributing to production-scale healthcare and education platforms by implementing features, integrating backend services, and tightening architecture across multiple user portals. Day to day work spans modular Flutter surfaces, Appwrite and Firebase data paths, performance under real load, and keeping design systems consistent from administrator and doctor flows through teacher and student experiences.",
+    contributions: [
+      "Built and maintained production features across healthcare and education platforms, supporting administrator, doctor, patient, teacher, and student workflows.",
+      "Integrated Flutter applications with Appwrite/Firebase for authentication, databases, storage, and real-time data.",
+      "Improved application architecture through feature modularization, shared components, consistent navigation, and state management.",
+      "Optimized performance by reducing unnecessary rebuilds, introducing caching, pagination, and efficient data loading strategies.",
+      "Diagnosed and resolved production bugs involving routing, state synchronization, backend integration, and responsive UI behavior.",
+      "Collaborated with designers and developers through feature branches, code reviews, and iterative product improvements.",
+    ],
+    technologies: [
+      "Flutter",
+      "Dart",
+      "Appwrite",
+      "Firebase",
+      "GetX",
+      "Cubit/Bloc",
+      "REST APIs",
+      "Git",
     ],
   },
 ];
@@ -219,6 +246,29 @@ export const education = {
     },
   ],
 };
+
+export const engineeringLessons = [
+  {
+    title: "Learning is a skill.",
+    body: "I started with almost no programming background. The biggest lesson wasn't coding - it was realizing that I could learn difficult things with enough curiosity and persistence.",
+  },
+  {
+    title: "Problems come before solutions.",
+    body: "The quality of a solution depends on how well the problem is understood. Whether I'm debugging, designing a feature, or working with AI tools, defining the problem is always the hardest part.",
+  },
+  {
+    title: "AI is a tool, not the engineer.",
+    body: "Modern development is no longer about writing every line by hand. It's about making good technical decisions, asking the right questions, and knowing how to evaluate the answers.",
+  },
+  {
+    title: "Details shape the experience.",
+    body: "I've learned to notice the small things - layout, interactions, consistency, and architecture - that make software feel reliable and well designed.",
+  },
+  {
+    title: "Growth never stops.",
+    body: "Software changes faster than almost any field I've seen. Instead of fearing that, I've learned to enjoy learning new technologies and exploring unfamiliar ideas.",
+  },
+];
 
 export const contact = {
   location: "Rawalpindi / Islamabad, Pakistan",

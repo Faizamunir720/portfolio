@@ -1,4 +1,4 @@
-/** Decorative GATE-style barcode — visual only, not a real barcode. */
+/** Decorative GATE-style barcode  -  visual only, not a real barcode. */
 const BAR_WIDTHS = [
   1, 2, 1, 1, 3, 1, 2, 1, 1, 1, 2, 3, 1, 1, 2, 1, 3, 1, 1, 2, 1, 1, 3, 2, 1, 1,
   1, 2, 1, 3, 1, 1, 2, 1, 1, 1, 3, 1, 2, 1, 1, 2, 3, 1, 1, 1, 2, 1,

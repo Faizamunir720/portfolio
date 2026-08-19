@@ -1,7 +1,19 @@
 "use client";
 
-import { useState, type ComponentType } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import {
+  useEffect,
+  useRef,
+  useState,
+  type ComponentType,
+} from "react";
+import {
+  motion,
+  useMotionValueEvent,
+  useReducedMotion,
+  useScroll,
+  useTransform,
+} from "framer-motion";
+import { cn } from "@/lib/utils";
 import {
   BrainCircuit,
   Globe2,
@@ -17,130 +29,198 @@ import { FinversePanel } from "./FinversePanel";
 
 type TabIcon = ComponentType<{ size?: number; className?: string }>;
 
-const tabs: {
-  id: "careerlab" | "forensiq" | "courtms" | "lahore-avm" | "finverse";
-  label: string;
+const courseworkItems: {
+  id: string;
+  category: string;
+  title: string;
+  subtitle: string;
   Icon: TabIcon;
-  project: string;
   Panel: ComponentType;
 }[] = [
   {
     id: "careerlab",
-    label: "AI & Knowledge Systems",
+    category: "AI & Knowledge Systems",
+    title: "CAREERLAB.AI",
+    subtitle: "Probabilistic matching, Prolog rules, disruption simulator",
     Icon: BrainCircuit,
-    project: "CAREERLAB.AI",
     Panel: CareerlabPanel,
   },
   {
     id: "forensiq",
-    label: "Info Security & Crypto",
+    category: "Info Security & Crypto",
+    title: "ForensiQ",
+    subtitle: "Client-side RSA vault, chain-of-custody ledger, RBAC matrix",
     Icon: ShieldCheck,
-    project: "ForensiQ",
     Panel: ForensiqPanel,
   },
   {
     id: "courtms",
-    label: "Distributed Web Systems",
+    category: "Distributed Web Systems",
+    title: "CourtMS",
+    subtitle: "5-State case lifecycle, JWT & multitenant gate, role boundaries",
     Icon: Globe2,
-    project: "CourtMS",
     Panel: CourtmsPanel,
   },
   {
     id: "lahore-avm",
-    label: "ML & Data Pipelines",
+    category: "ML & Data Pipelines",
+    title: "Lahore AVM",
+    subtitle: "Real-time observer loop, SHAP explainability, feature pipeline",
     Icon: LineChart,
-    project: "Lahore AVM",
     Panel: LahoreAvmPanel,
   },
   {
     id: "finverse",
-    label: "Desktop OOP & Systems",
+    category: "Desktop OOP & Systems",
+    title: "Finverse",
+    subtitle: "12-Unit vault trail, options settlement math, paper trading app",
     Icon: Monitor,
-    project: "Finverse",
     Panel: FinversePanel,
   },
 ];
 
 export function AcademicDisciplines() {
-  const [active, setActive] = useState<(typeof tabs)[number]["id"]>("careerlab");
-  const current = tabs.find((t) => t.id === active) ?? tabs[0];
-  const Panel = current.Panel;
+  const containerRef = useRef<HTMLElement>(null);
+  const viewportRef = useRef<HTMLDivElement>(null);
+  const trackRef = useRef<HTMLDivElement>(null);
+  const [travel, setTravel] = useState(0);
+  const [activeIdx, setActiveIdx] = useState(0);
+  const reduce = useReducedMotion();
+
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end end"],
+  });
+
+  useEffect(() => {
+    const measure = () => {
+      const viewport = viewportRef.current;
+      const track = trackRef.current;
+      if (!viewport || !track) return;
+      const next = Math.max(0, track.scrollWidth - viewport.clientWidth);
+      setTravel(next);
+    };
+
+    measure();
+    const ro =
+      typeof ResizeObserver !== "undefined"
+        ? new ResizeObserver(measure)
+        : null;
+    if (viewportRef.current) ro?.observe(viewportRef.current);
+    if (trackRef.current) ro?.observe(trackRef.current);
+    window.addEventListener("resize", measure);
+    return () => {
+      ro?.disconnect();
+      window.removeEventListener("resize", measure);
+    };
+  }, []);
+
+  useMotionValueEvent(scrollYProgress, "change", (v) => {
+    const n = courseworkItems.length;
+    const idx = Math.min(n - 1, Math.max(0, Math.round(v * (n - 1))));
+    setActiveIdx((prev) => (prev === idx ? prev : idx));
+  });
+
+  const x = useTransform(scrollYProgress, [0, 1], [0, -travel]);
+  const progressScale = useTransform(scrollYProgress, [0, 1], [0, 1]);
+  const active = courseworkItems[activeIdx];
 
   return (
     <section
+      ref={containerRef}
       id="disciplines"
-      className="mt-8 w-full py-12 sm:py-16 lg:mt-10"
+      className="relative h-[280vh] border-t border-[var(--hairline)] bg-[var(--background)]"
+      aria-label="Engineering journey"
     >
-      <div className="mb-8 max-w-3xl">
-        <p className="text-xs uppercase tracking-[0.18em] text-zinc-500">
-          Coursework systems
-        </p>
-        <h2 className="mt-2 text-3xl font-semibold tracking-tight sm:text-4xl">
-          Academic Disciplines & Systems Engineering
-        </h2>
-        <p className="mt-3 text-[15px] leading-relaxed text-muted sm:text-base">
-          Deep-dive into custom system architectures, cryptographic security,
-          and algorithmic logic across core Computer Science subjects.
-        </p>
-      </div>
-
-      <div className="-mx-1 overflow-x-auto pb-2">
-        <div className="flex min-w-max gap-2 px-1">
-          {tabs.map((tab) => {
-            const selected = tab.id === active;
-            const Icon = tab.Icon;
-            return (
-              <button
-                key={tab.id}
-                type="button"
-                onClick={() => setActive(tab.id)}
-                className="relative rounded-full px-4 py-2.5 text-left text-sm transition"
-              >
-                {selected ? (
-                  <motion.span
-                    layoutId="disciplineTab"
-                    className="absolute inset-0 rounded-full border border-white/15 bg-white/10 shadow-[0_0_24px_-8px_rgba(34,211,238,0.45)]"
-                    transition={{ type: "spring", stiffness: 380, damping: 32 }}
-                  />
-                ) : null}
-                <span className="relative z-10 flex flex-col">
-                  <span
-                    className={`inline-flex items-center gap-2 ${
-                      selected ? "font-medium text-white" : "text-zinc-400"
-                    }`}
-                  >
-                    <Icon
-                      size={15}
-                      className={
-                        selected ? "text-cyan-300" : "text-zinc-500"
-                      }
-                      aria-hidden
-                    />
-                    {tab.label}
-                  </span>
-                  <span className="mt-0.5 pl-[23px] text-[11px] text-zinc-500">
-                    {tab.project}
-                  </span>
-                </span>
-              </button>
-            );
-          })}
+      {/* Full-viewport sticky stage — cards own the height */}
+      <div className="sticky top-0 flex h-dvh flex-col overflow-hidden">
+        {/* Compact chrome (replaces tall section heading) */}
+        <div className="cosmic-band-inner flex shrink-0 items-center justify-between gap-4 border-b border-[var(--hairline)] py-3">
+          <div className="min-w-0">
+            <p className="font-[family-name:var(--font-ibm-plex-mono)] text-[13px] font-semibold uppercase tracking-[0.16em] text-[var(--cp-accent-2,var(--cp-accent))] sm:text-sm">
+              Engineering journey
+            </p>
+            <p className="mt-0.5 truncate text-sm text-[var(--cp-ink-soft,var(--muted))]">
+              <span className="text-[var(--cp-ink,var(--foreground))]">
+                {active.title}
+              </span>
+              <span className="text-[var(--cp-ink-soft,var(--muted))]">
+                {" "}
+                · {active.category}
+              </span>
+            </p>
+          </div>
+          <div className="flex shrink-0 items-center gap-3">
+            <span className="font-[family-name:var(--font-ibm-plex-mono)] text-[11px] tabular-nums text-[var(--cp-ink-soft,var(--muted))]">
+              {String(activeIdx + 1).padStart(2, "0")}/
+              {String(courseworkItems.length).padStart(2, "0")}
+            </span>
+            <div className="h-px w-24 overflow-hidden bg-[color-mix(in_srgb,var(--cp-ink)_12%,transparent)] sm:w-36">
+              <motion.div
+                className="h-full origin-left bg-[var(--cp-accent)]"
+                style={{ scaleX: reduce ? 1 : progressScale }}
+              />
+            </div>
+          </div>
         </div>
-      </div>
 
-      <div className="mt-6 [perspective:1400px]">
-        <AnimatePresence mode="wait">
+        <div
+          ref={viewportRef}
+          className={cn(
+            "relative min-h-0 flex-1 py-3 sm:py-4",
+            reduce ? "overflow-x-auto overscroll-x-contain" : "overflow-hidden",
+          )}
+        >
           <motion.div
-            key={active}
-            initial={{ opacity: 0, y: 18, rotateX: 6 }}
-            animate={{ opacity: 1, y: 0, rotateX: 0 }}
-            exit={{ opacity: 0, y: -12, rotateX: -4 }}
-            transition={{ duration: 0.32, ease: [0.22, 1, 0.36, 1] }}
-            style={{ transformStyle: "preserve-3d" }}
+            ref={trackRef}
+            style={reduce ? undefined : { x }}
+            className="flex h-full gap-5 px-[clamp(1.25rem,4vw,3rem)] sm:gap-6"
           >
-            <Panel />
+            {courseworkItems.map((item, idx) => {
+              const Panel = item.Panel;
+              const Icon = item.Icon;
+              const shouldMount = Math.abs(idx - activeIdx) <= 1;
+
+              return (
+                <article
+                  key={item.id}
+                  className="flex h-full w-[min(92vw,1040px)] shrink-0 flex-col overflow-hidden border border-[var(--hairline)] bg-[var(--background)]"
+                >
+                  <header className="flex shrink-0 items-start justify-between gap-4 border-b border-[var(--hairline)] px-4 py-3 sm:px-5 sm:py-3.5">
+                    <div className="min-w-0">
+                      <p className="font-[family-name:var(--font-ibm-plex-mono)] text-[11px] uppercase tracking-[0.14em] text-[var(--cp-accent-2,var(--cp-accent))]">
+                        {String(idx + 1).padStart(2, "0")} // {item.category}
+                      </p>
+                      <h3 className="mt-1 flex items-center gap-2 text-lg font-semibold tracking-tight text-[var(--cp-ink,var(--foreground))] sm:text-xl">
+                        <Icon
+                          size={16}
+                          className="shrink-0 text-[var(--cp-accent)]"
+                          aria-hidden
+                        />
+                        {item.title}
+                      </h3>
+                      <p className="mt-1 line-clamp-1 text-[13px] text-[var(--cp-ink-soft,var(--muted))]">
+                        {item.subtitle}
+                      </p>
+                    </div>
+                    <span className="font-[family-name:var(--font-ibm-plex-mono)] text-[11px] tabular-nums text-[var(--cp-ink-soft,var(--muted))]">
+                      {idx + 1}/{courseworkItems.length}
+                    </span>
+                  </header>
+
+                  {/* Full remaining height — no inner scrollbar */}
+                  <div className="min-h-0 flex-1 overflow-hidden px-3 py-3 sm:px-4 sm:py-4">
+                    {shouldMount ? (
+                      <Panel />
+                    ) : (
+                      <div className="h-full" aria-hidden />
+                    )}
+                  </div>
+                </article>
+              );
+            })}
           </motion.div>
-        </AnimatePresence>
+        </div>
       </div>
     </section>
   );
