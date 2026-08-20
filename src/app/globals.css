@@ -1,5 +1,6 @@
 @import "tailwindcss";
 
+/* ── Cosmic (locked live theme) ── */
 :root {
   --background: #05060c;
   --foreground: #f4f4f5;
@@ -9,52 +10,111 @@
   --surface-solid: #10121a;
   --glow-gold: rgba(255, 190, 70, 0.35);
   --glow-cyan: rgba(80, 180, 255, 0.25);
-  /* Cosmic full-bleed hero grid  -  always a true light/dark pair */
+
+  /* Hero grid — always light/dark pair (independent of page ink) */
   --hero-light: #f4f4f5;
   --hero-dark: #05060c;
   --hero-hover: #1e3a8a;
   --hero-num: #71717a;
-  /* Cosmic ink / accent roles (palette lab overrides these) */
+
+  /* Role tokens used across sections */
   --cp-ink: #f4f4f5;
   --cp-ink-soft: #c4c4cc;
+  --cp-paper: #05060c;
   --cp-card: rgb(12 14 22 / 0.94);
+  --cp-cta: #ffffff;
+  --cp-cta-fg: #0a0a0e;
   --cp-accent: #22d3ee;
   --cp-accent-2: #a78bfa;
   --cp-chip: rgb(0 0 0 / 0.45);
+  --cp-nav: rgb(5 6 12 / 0.92);
+  --cp-selection-bg: #ffffff;
+  --cp-selection-fg: #0a0a0e;
+  --cp-pulse: #4ade80;
+
+  /* Curtain footer */
+  --cosmic-footer-h: min(70vh, 540px);
+  --footer-bg: #0a0a0e;
+  --footer-ink: #f4f4f5;
+  --footer-accent: #22d3ee;
+  --footer-accent-fg: #05060c;
+
+  color-scheme: dark;
 }
 
-/* Hero copy must beat palette heading overrides on every swatch set */
-#hero .hero-title {
-  color: #000 !important;
-  -webkit-text-fill-color: #000 !important;
-  background: transparent !important;
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-hairline: var(--hairline);
+  --color-surface: var(--surface);
+  --font-sans: var(--font-inter);
+  --font-mono: var(--font-ibm-plex-mono);
 }
 
-#hero .hero-lede {
+html {
+  scroll-behavior: auto;
+  background: var(--background);
+}
+
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis.lenis-scrolling iframe {
+  pointer-events: none;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: var(--cp-selection-bg);
+  color: var(--cp-selection-fg);
+}
+
+:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--cp-accent) 55%, transparent);
+  outline-offset: 3px;
+}
+
+/* Light hero field — black ink must win over body foreground (#f4f4f5) */
+#hero .hero-light-ink,
+#hero .hero-light-ink h1 {
+  color: #000000 !important;
+  -webkit-text-fill-color: #000000 !important;
+}
+
+#hero .hero-light-ink .hero-cta-fill {
   color: #f4f4f5 !important;
+  -webkit-text-fill-color: #f4f4f5 !important;
 }
 
-#hero .hero-cta-fill {
-  background: #05060c !important;
-  color: #f4f4f5 !important;
+header[data-over-hero="true"],
+header[data-over-hero="true"] a {
+  color: #000000 !important;
+  -webkit-text-fill-color: #000000 !important;
 }
 
-#hero .hero-cta-ghost {
-  border-color: rgb(5 6 12 / 0.28) !important;
-  color: #05060c !important;
-  background: #f4f4f5 !important;
-}
-
-#hero .hero-cta-ghost:hover {
-  border-color: rgb(5 6 12 / 0.55) !important;
-}
-
-#hero .hero-social {
-  position: relative;
-  z-index: 21;
-  color: #05060c !important;
-  background: #f4f4f5 !important;
-  box-shadow: 0 1px 0 rgb(5 6 12 / 0.08);
+header[data-over-hero="true"] a {
+  border-color: rgb(0 0 0 / 0.22) !important;
 }
 
 .cosmic-band {
@@ -66,15 +126,6 @@
   width: 100%;
   max-width: 1600px;
   padding-inline: clamp(1.25rem, 4vw, 3rem);
-}
-
-/* Cosmic curtain footer  -  fixed under opaque content sheet */
-:root {
-  --cosmic-footer-h: min(70vh, 540px);
-  --footer-bg: #0a0a0e;
-  --footer-ink: #f4f4f5;
-  --footer-accent: #22d3ee;
-  --footer-accent-fg: #05060c;
 }
 
 .cosmic-curtain {
@@ -98,120 +149,12 @@
   text-rendering: geometricPrecision;
 }
 
-/* Lenis  -  avoid layout jump when smooth scroll is active */
-html.lenis,
-html.lenis body {
-  height: auto;
-}
-
-.lenis.lenis-smooth {
-  scroll-behavior: auto !important;
-}
-
-.lenis.lenis-smooth [data-lenis-prevent] {
-  overscroll-behavior: contain;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-muted: var(--muted);
-  --color-hairline: var(--hairline);
-  --color-surface: var(--surface);
-  --color-surface-solid: var(--surface-solid);
-  --font-sans: var(--font-inter);
-  --font-mono: var(--font-ibm-plex-mono);
-}
-
-html {
-  scroll-behavior: smooth;
-  color-scheme: dark;
-}
-
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
-}
-
-::selection {
-  background: #ffffff;
-  color: #0a0a0e;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
-  .marquee-track {
-    animation: none !important;
-  }
-}
-
-.bento-card {
-  border: 1px solid rgb(255 255 255 / 0.12);
-  border-radius: 1.5rem;
-  background: rgb(12 14 22 / 0.94);
-  backdrop-filter: blur(18px);
-  box-shadow: 0 20px 40px -28px rgb(0 0 0 / 0.9);
-  transition:
-    border-color 0.3s ease,
-    transform 0.3s ease,
-    box-shadow 0.3s ease;
-}
-
-.bento-card:hover {
-  border-color: rgb(255 255 255 / 0.2);
-  transform: translateY(-2px);
-  box-shadow: 0 24px 48px -24px rgb(34 211 238 / 0.12);
-}
-
-.bento-3d {
-  transform-style: preserve-3d;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .bento-3d {
-    transform: none !important;
-  }
-}
-
-.chip {
-  display: inline-flex;
-  align-items: center;
-  border-radius: 9999px;
-  border: 1px solid rgb(255 255 255 / 0.14);
-  background: rgb(0 0 0 / 0.45);
-  padding: 0.35rem 0.75rem;
-  font-size: 0.72rem;
-  letter-spacing: 0.02em;
-  color: #e4e4e7;
-}
-
-.icon-btn {
-  display: inline-flex;
-  height: 2.75rem;
-  width: 2.75rem;
-  align-items: center;
-  justify-content: center;
-  border-radius: 9999px;
-  border: 1px solid rgb(255 255 255 / 0.12);
-  color: #e4e4e7;
-  transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
-}
-
-.icon-btn:hover {
-  background: rgb(255 255 255 / 0.06);
-  border-color: rgb(255 255 255 / 0.25);
-  transform: translateY(-1px);
-}
-
 .pulse-dot {
   width: 8px;
   height: 8px;
   border-radius: 9999px;
-  background: #4ade80;
-  box-shadow: 0 0 0 0 rgb(74 222 128 / 0.45);
+  background: var(--cp-pulse);
+  box-shadow: 0 0 0 0 color-mix(in srgb, var(--cp-pulse) 45%, transparent);
   animation: pulse 1.8s ease-out infinite;
 }
 
@@ -221,504 +164,13 @@ body {
   }
 }
 
-.marquee {
-  overflow: hidden;
-  mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
-}
-
-.marquee-track {
-  display: flex;
-  width: max-content;
-  animation: marquee 28s linear infinite;
-}
-
-@keyframes marquee {
-  to {
-    transform: translateX(-50%);
-  }
-}
-
-.modal-backdrop {
-  background: rgb(0 0 0 / 0.75);
-  backdrop-filter: blur(10px);
-}
-
-.glow-orb {
-  pointer-events: none;
-  position: absolute;
-  border-radius: 9999px;
-  filter: blur(80px);
-  opacity: 0.35;
-}
-
-.tech-node {
-  transition:
-    box-shadow 0.25s ease,
-    border-color 0.25s ease,
-    background 0.25s ease;
-}
-
-.tech-node:hover {
-  border-color: rgb(255 255 255 / 0.28);
-}
-
-.glow-cyan:hover {
-  box-shadow:
-    0 0 0 1px rgb(34 211 238 / 0.2),
-    0 12px 36px -10px rgb(34 211 238 / 0.45);
-}
-
-.glow-purple:hover {
-  box-shadow:
-    0 0 0 1px rgb(167 139 250 / 0.22),
-    0 12px 36px -10px rgb(139 92 246 / 0.45);
-}
-
-.glow-blue:hover {
-  box-shadow:
-    0 0 0 1px rgb(96 165 250 / 0.22),
-    0 12px 36px -10px rgb(59 130 246 / 0.45);
-}
-
-.glow-orange:hover {
-  box-shadow:
-    0 0 0 1px rgb(251 146 60 / 0.22),
-    0 12px 36px -10px rgb(249 115 22 / 0.4);
-}
-
-/* ── Pixel OS / Y2K Brutalism theme tokens ── */
-html[data-theme="pixel"] {
-  --background: #00001b;
-  --foreground: #ffffff;
-  --muted: #c4c4d4;
-  --px-bit: #00001b;
-  --px-blue: #2227f7;
-  --px-pink: #ff3b9b;
-  --px-green: #24d44d;
-  --px-yellow: #ffd635;
-  --px-bubblegum: #f478b0;
-  --px-tangerine: #ffa934;
-  --px-ocean: #00a0b5;
-  --px-banana: #ffef5a;
-  --px-ink: #000000;
-  --px-paper: #f5f5f0;
-  color-scheme: dark;
-}
-
-html[data-theme="pixel"] body {
-  background: var(--px-bit);
-  font-family: var(--font-jetbrains-mono), ui-monospace, monospace;
-}
-
-html[data-theme="pixel"] ::selection {
-  background: #ffd635;
-  color: #000;
-}
-
-.pixel-root {
-  --font-display: var(--font-space-grotesk);
-}
-
-@keyframes px-marquee {
-  to {
-    transform: translateX(-50%);
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
-  .pixel-root * {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
 }
-
-/* ── Studio / editorial print theme tokens ── */
-html[data-theme="studio"] {
-  --background: #f7f5f0;
-  --foreground: #141414;
-  --muted: #8a8a8a;
-  --st-paper: #f7f5f0;
-  --st-ink: #141414;
-  --st-soft: #4a4a4a;
-  --st-mute: #8a8a8a;
-  --st-rule: #d6d1c7;
-  --st-surface: #ffffff;
-  --st-signal: #1f4b3f;
-  color-scheme: light;
-}
-
-html[data-theme="studio"] body {
-  background: var(--st-paper);
-  color: var(--st-ink);
-  font-family: var(--font-source-serif), ui-serif, Georgia, serif;
-}
-
-html[data-theme="studio"] ::selection {
-  background: #1f4b3f;
-  color: #f7f5f0;
-}
-
-.studio-root {
-  background: var(--st-paper);
-  color: var(--st-ink);
-}
-
-.studio-link {
-  position: relative;
-  text-decoration: none;
-  background-image: linear-gradient(currentColor, currentColor);
-  background-position: 0 100%;
-  background-repeat: no-repeat;
-  background-size: 0% 1px;
-  transition: background-size 0.35s ease, color 0.2s ease;
-}
-
-.studio-link:hover,
-.studio-link:focus-visible {
-  background-size: 100% 1px;
-  color: var(--st-signal);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .studio-link {
-    transition: none;
-  }
-  /* Keep content readable when OS reduce-motion is on; JS also short-circuits. */
-  .studio-root [data-studio-hero],
-  .studio-root [data-studio-hero] li,
-  .studio-root [data-studio-reveal],
-  .studio-root [data-studio-item] {
-    opacity: 1 !important;
-    transform: none !important;
-  }
-}
-
-/* ── Temporary Cosmic palette lab overrides ── */
-html[data-cosmic-palette] body {
-  background: var(--background);
-  color: var(--foreground);
-}
-
-html[data-cosmic-palette] ::selection {
-  background: var(--cp-selection-bg);
-  color: var(--cp-selection-fg);
-}
-
-html[data-cosmic-palette] .bento-card {
-  background: var(--cp-card);
-  border-color: var(--hairline);
-  box-shadow: 0 18px 40px -28px rgb(0 0 0 / 0.35);
-}
-
-html[data-cosmic-palette] .bento-card:hover {
-  border-color: var(--cp-accent);
-  box-shadow: 0 22px 48px -24px color-mix(in srgb, var(--cp-accent) 28%, transparent);
-}
-
-html[data-cosmic-palette] .chip {
-  border-color: var(--hairline);
-  background: var(--cp-chip);
-  color: var(--cp-ink);
-}
-
-html[data-cosmic-palette] .icon-btn {
-  border-color: var(--hairline);
-  color: var(--cp-ink);
-}
-
-html[data-cosmic-palette] .icon-btn:hover {
-  background: color-mix(in srgb, var(--cp-accent) 14%, transparent);
-  border-color: var(--cp-accent);
-}
-
-html[data-cosmic-palette] .pulse-dot {
-  background: var(--cp-pulse);
-  box-shadow: 0 0 0 0 color-mix(in srgb, var(--cp-pulse) 45%, transparent);
-}
-
-html[data-cosmic-palette] .tech-node {
-  border-color: var(--hairline) !important;
-  background: var(--cp-card) !important;
-  color: var(--cp-ink);
-}
-
-html[data-cosmic-palette] .modal-backdrop {
-  background: rgb(0 0 0 / 0.55);
-}
-
-/* Soften / hide cosmic particles on light palettes */
-html[data-cosmic-palette="earth"] .cosmic-particles,
-html[data-cosmic-palette="mirage-light"] .cosmic-particles,
-html[data-cosmic-palette="arcade-light"] .cosmic-particles {
-  opacity: 0.08;
-  filter: grayscale(0.3) brightness(1.4);
-}
-
-html[data-cosmic-palette="mirage-dark"] .cosmic-particles,
-html[data-cosmic-palette="arcade-dark"] .cosmic-particles {
-  opacity: 0.55;
-}
-
-/* Nav: only force palette colors once scrolled past the hero */
-html[data-cosmic-palette] header.fixed.cosmic-nav-scrolled {
-  background: var(--cp-nav) !important;
-  border-color: var(--hairline) !important;
-  color: var(--cp-ink);
-}
-
-html[data-cosmic-palette] header.fixed.cosmic-nav-scrolled a {
-  color: var(--cp-ink-soft);
-}
-
-html[data-cosmic-palette] header.fixed.cosmic-nav-scrolled a:hover {
-  color: var(--cp-ink) !important;
-}
-
-/*
-  Hero split always uses a light field + dark field.
-  Never bind --hero-dark to --cp-ink on dark themes (ink is light there).
-*/
-html[data-cosmic-palette="original"] {
-  --hero-light: #f4f4f5;
-  --hero-dark: #05060c;
-  --hero-hover: #1e3a8a;
-  --hero-num: #71717a;
-}
-
-html[data-cosmic-palette="mirage-dark"] {
-  --hero-light: #f6f7ed;
-  --hero-dark: #001f3f;
-  --hero-hover: #1e488f;
-  --hero-num: #6b7f8f;
-}
-
-html[data-cosmic-palette="arcade-dark"] {
-  --hero-light: #edebe2;
-  --hero-dark: #113c42;
-  --hero-hover: #b97da8;
-  --hero-num: #6a8084;
-}
-
-html[data-cosmic-palette="earth"] {
-  --hero-light: #f4f1e2;
-  --hero-dark: #513229;
-  --hero-hover: #5b87a3;
-  --hero-num: #8a7366;
-}
-
-html[data-cosmic-palette="mirage-light"] {
-  --hero-light: #f6f7ed;
-  --hero-dark: #001f3f;
-  --hero-hover: #00804c;
-  --hero-num: #5a6f7e;
-}
-
-html[data-cosmic-palette="arcade-light"] {
-  --hero-light: #edebe2;
-  --hero-dark: #113c42;
-  --hero-hover: #136c51;
-  --hero-num: #6a8084;
-}
-
-/* Theme switcher + icon buttons over the light hero field */
-.cosmic-nav-top .icon-btn {
-  border-color: color-mix(in srgb, var(--hero-dark) 22%, transparent);
-  color: var(--hero-dark);
-  background: transparent;
-}
-
-.cosmic-nav-top .icon-btn:hover {
-  border-color: color-mix(in srgb, var(--hero-dark) 45%, transparent);
-  background: color-mix(in srgb, var(--hero-dark) 6%, transparent);
-}
-
-/* Common zinc / white / cyan text → ink roles (light palettes especially) */
-html[data-cosmic-palette] .text-muted,
-html[data-cosmic-palette] .text-zinc-600,
-html[data-cosmic-palette] .text-zinc-500,
-html[data-cosmic-palette] .text-zinc-400,
-html[data-cosmic-palette] .text-slate-200 {
-  color: var(--cp-ink-soft) !important;
-}
-
-/* Do NOT force h1 here — hero title lives on the light field and must stay black */
-html[data-cosmic-palette] h2,
-html[data-cosmic-palette] h3,
-html[data-cosmic-palette] .text-zinc-300,
-html[data-cosmic-palette] .text-zinc-200,
-html[data-cosmic-palette] .text-zinc-100,
-html[data-cosmic-palette] .text-zinc-50,
-html[data-cosmic-palette] .text-white {
-  color: var(--cp-ink) !important;
-}
-
-/* Hard black — do not use CSS variables (LightningCSS may rewrite them) */
-html[data-cosmic-palette] #hero h1.hero-title,
-#hero h1.hero-title,
-#hero .hero-title,
-.hero-title {
-  color: #000 !important;
-  -webkit-text-fill-color: #000 !important;
-  background: transparent !important;
-  background-color: transparent !important;
-  text-shadow: none !important;
-  mix-blend-mode: normal !important;
-  filter: none !important;
-  opacity: 1 !important;
-}
-
-html[data-cosmic-palette] #hero .hero-lede,
-#hero .hero-lede {
-  color: #f4f4f5 !important;
-  -webkit-text-fill-color: #f4f4f5 !important;
-}
-
-html[data-cosmic-palette] #hero .hero-cta-fill {
-  background: #05060c !important;
-  color: #f4f4f5 !important;
-  -webkit-text-fill-color: #f4f4f5 !important;
-}
-
-html[data-cosmic-palette] #hero .hero-cta-ghost,
-html[data-cosmic-palette] #hero .hero-social,
-#hero .hero-cta-ghost,
-#hero .hero-social {
-  border-color: rgb(5 6 12 / 0.28) !important;
-  color: #05060c !important;
-  -webkit-text-fill-color: #05060c !important;
-  background: #f4f4f5 !important;
-  background-color: #f4f4f5 !important;
-}
-
-/* Brand + icons stay dark while over the light hero field */
-html[data-cosmic-palette] header.fixed.cosmic-nav-top,
-html[data-cosmic-palette] header.fixed.cosmic-nav-top a {
-  color: #05060c !important;
-  -webkit-text-fill-color: #05060c !important;
-}
-
-html[data-cosmic-palette] header.fixed.cosmic-nav-top a[aria-label] {
-  border-color: rgb(5 6 12 / 0.22) !important;
-  color: #05060c !important;
-  -webkit-text-fill-color: #05060c !important;
-  background: transparent !important;
-}
-
-html[data-cosmic-palette] header.fixed.cosmic-nav-top .nav-brand,
-header.fixed.cosmic-nav-top .nav-brand {
-  color: #05060c !important;
-  -webkit-text-fill-color: #05060c !important;
-}
-
-/* Cyan accents read as wash on cream — map to palette accent */
-html[data-cosmic-palette] .text-cyan-300,
-html[data-cosmic-palette] .text-cyan-300\/90,
-html[data-cosmic-palette] .text-cyan-400 {
-  color: var(--cp-accent-2, var(--cp-accent)) !important;
-}
-
-html[data-cosmic-palette="earth"] .text-cyan-300,
-html[data-cosmic-palette="earth"] .text-cyan-300\/90,
-html[data-cosmic-palette="earth"] .text-cyan-400,
-html[data-cosmic-palette="mirage-light"] .text-cyan-300,
-html[data-cosmic-palette="mirage-light"] .text-cyan-300\/90,
-html[data-cosmic-palette="mirage-light"] .text-cyan-400,
-html[data-cosmic-palette="arcade-light"] .text-cyan-300,
-html[data-cosmic-palette="arcade-light"] .text-cyan-300\/90,
-html[data-cosmic-palette="arcade-light"] .text-cyan-400 {
-  color: var(--cp-accent-2) !important;
-}
-
-html[data-cosmic-palette] .border-white\/10,
-html[data-cosmic-palette] .border-white\/12,
-html[data-cosmic-palette] .border-white\/15 {
-  border-color: var(--hairline) !important;
-}
-
-html[data-cosmic-palette] .bg-black\/30,
-html[data-cosmic-palette] .bg-white\/\[0\.03\],
-html[data-cosmic-palette] .bg-white\/5,
-html[data-cosmic-palette] .bg-white\/\[0\.04\] {
-  background: color-mix(in srgb, var(--cp-soft-panel, var(--cp-chip)) 55%, transparent) !important;
-}
-
-/* Primary CTA (Hero View Projects is bg-white text-black) */
-html[data-cosmic-palette] a.bg-white {
-  background: var(--cp-cta) !important;
-  color: var(--cp-cta-fg) !important;
-}
-
-html[data-cosmic-palette] a.bg-white:hover {
-  filter: brightness(1.05);
-}
-
-html[data-cosmic-palette] .cosmic-footer {
-  border-color: transparent !important;
-  color: var(--footer-ink);
-}
-
-html[data-cosmic-palette="original"] {
-  --footer-bg: #05060c;
-  --footer-ink: #f4f4f5;
-  --footer-accent: #22d3ee;
-  --footer-accent-fg: #05060c;
-}
-
-html[data-cosmic-palette="earth"] {
-  --footer-bg: #513229;
-  --footer-ink: #f4f1e2;
-  --footer-accent: #fce6b7;
-  --footer-accent-fg: #513229;
-}
-
-html[data-cosmic-palette="mirage-light"] {
-  --footer-bg: #001f3f;
-  --footer-ink: #f6f7ed;
-  --footer-accent: #dbe64c;
-  --footer-accent-fg: #001f3f;
-}
-
-html[data-cosmic-palette="mirage-dark"] {
-  --footer-bg: #001f3f;
-  --footer-ink: #f6f7ed;
-  --footer-accent: #dbe64c;
-  --footer-accent-fg: #001f3f;
-}
-
-html[data-cosmic-palette="arcade-light"] {
-  --footer-bg: #113c42;
-  --footer-ink: #edebe2;
-  --footer-accent: #eedc5b;
-  --footer-accent-fg: #113c42;
-}
-
-html[data-cosmic-palette="arcade-dark"] {
-  --footer-bg: #113c42;
-  --footer-ink: #edebe2;
-  --footer-accent: #eedc5b;
-  --footer-accent-fg: #113c42;
-}
-
-/* Light-mode soft panels for project detail blocks */
-html[data-cosmic-palette="earth"] .rounded-2xl.border,
-html[data-cosmic-palette="mirage-light"] .rounded-2xl.border,
-html[data-cosmic-palette="arcade-light"] .rounded-2xl.border {
-  background: color-mix(
-    in srgb,
-    var(--cp-soft-panel, var(--cp-chip)) 42%,
-    var(--cp-card)
-  ) !important;
-  color: var(--cp-ink);
-}
-
-html[data-cosmic-palette="earth"],
-html[data-cosmic-palette="mirage-light"],
-html[data-cosmic-palette="arcade-light"] {
-  color-scheme: light;
-}
-
-html[data-cosmic-palette="mirage-dark"],
-html[data-cosmic-palette="arcade-dark"],
-html[data-cosmic-palette="original"] {
-  color-scheme: dark;
-}
-

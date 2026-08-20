@@ -17,28 +17,16 @@ const HIDE_DELTA = 12;
 const SHOW_DELTA = 8;
 const TOP_REVEAL = 64;
 const LERP = 0.14;
+const LIGHT_INK = "#000000";
 
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const headerRef = useRef<HTMLElement>(null);
-  const brandRef = useRef<HTMLAnchorElement>(null);
   const lastScrollY = useRef(0);
   const targetHidden = useRef(0);
   const currentHidden = useRef(0);
   const reduceMotion = useRef(false);
   const rafRef = useRef(0);
-
-  useEffect(() => {
-    const brand = brandRef.current;
-    if (!brand) return;
-    if (scrolled) {
-      brand.style.removeProperty("color");
-      brand.style.removeProperty("-webkit-text-fill-color");
-    } else {
-      brand.style.setProperty("color", "#000000", "important");
-      brand.style.setProperty("-webkit-text-fill-color", "#000000", "important");
-    }
-  }, [scrolled]);
 
   useEffect(() => {
     lastScrollY.current = window.scrollY;
@@ -67,7 +55,6 @@ export function Navbar() {
       currentHidden.current = cur;
       applyTransform(cur);
 
-      // Only keep the loop alive while the header is still moving
       if (cur !== target) {
         rafRef.current = requestAnimationFrame(tick);
       } else {
@@ -106,38 +93,43 @@ export function Navbar() {
     };
   }, []);
 
+  const overHero = !scrolled;
+
   return (
     <header
       ref={headerRef}
+      data-over-hero={overHero ? "true" : "false"}
       className={`fixed inset-x-0 top-0 z-40 ${
         scrolled
-          ? "border-b border-white/10 bg-[#05060c]/92 text-white cosmic-nav-scrolled"
-          : "border-b border-transparent bg-transparent text-[var(--hero-dark)] cosmic-nav-top"
+          ? "border-b border-white/10 bg-[#05060c]/92 text-white"
+          : "border-b border-transparent bg-transparent"
       }`}
-      style={{ transform: "translate3d(0,0,0)", opacity: 1 }}
+      style={{
+        transform: "translate3d(0,0,0)",
+        opacity: 1,
+        color: overHero ? LIGHT_INK : undefined,
+      }}
     >
       <nav className="mx-auto flex w-full max-w-[1600px] items-center justify-between px-5 py-3.5 sm:px-8 lg:px-12">
         <a
-          ref={brandRef}
           href="#hero"
-          className="nav-brand text-sm font-semibold tracking-wide"
+          className="text-sm font-semibold tracking-wide"
+          style={overHero ? { color: LIGHT_INK, WebkitTextFillColor: LIGHT_INK } : undefined}
         >
           FAIZA<span className="opacity-45">.</span>
         </a>
         <ul
           className={`hidden items-center gap-6 text-[11px] font-medium uppercase tracking-[0.16em] md:flex ${
-            scrolled ? "text-zinc-400" : "text-[var(--hero-dark)]/70"
+            scrolled ? "text-zinc-400" : ""
           }`}
+          style={overHero ? { color: "rgb(0 0 0 / 0.7)" } : undefined}
         >
           {links.map((l) => (
             <li key={l.href}>
               <a
                 href={l.href}
-                className={`transition-colors ${
-                  scrolled
-                    ? "hover:text-white"
-                    : "hover:text-[var(--hero-dark)]"
-                }`}
+                className={`transition-colors ${scrolled ? "hover:text-white" : ""}`}
+                style={overHero ? { color: "rgb(0 0 0 / 0.7)" } : undefined}
               >
                 {l.label}
               </a>
@@ -152,8 +144,9 @@ export function Navbar() {
             className={`inline-flex h-9 w-9 items-center justify-center rounded-full border transition ${
               scrolled
                 ? "border-white/12 text-zinc-200 hover:border-white/30"
-                : "border-[var(--hero-dark)]/20 text-[var(--hero-dark)] hover:border-[var(--hero-dark)]/45"
+                : "border-black/20 hover:border-black/45"
             }`}
+            style={overHero ? { color: LIGHT_INK } : undefined}
             aria-label="GitHub"
           >
             <GitHubIcon size={15} />
@@ -165,8 +158,9 @@ export function Navbar() {
             className={`inline-flex h-9 w-9 items-center justify-center rounded-full border transition ${
               scrolled
                 ? "border-white/12 text-zinc-200 hover:border-white/30"
-                : "border-[var(--hero-dark)]/20 text-[var(--hero-dark)] hover:border-[var(--hero-dark)]/45"
+                : "border-black/20 hover:border-black/45"
             }`}
+            style={overHero ? { color: LIGHT_INK } : undefined}
             aria-label="LinkedIn"
           >
             <LinkedInIcon size={15} />
@@ -176,8 +170,9 @@ export function Navbar() {
             className={`inline-flex h-9 w-9 items-center justify-center rounded-full border transition ${
               scrolled
                 ? "border-white/12 text-zinc-200 hover:border-white/30"
-                : "border-[var(--hero-dark)]/20 text-[var(--hero-dark)] hover:border-[var(--hero-dark)]/45"
+                : "border-black/20 hover:border-black/45"
             }`}
+            style={overHero ? { color: LIGHT_INK } : undefined}
             aria-label="Email"
           >
             <Mail size={15} />

@@ -171,20 +171,6 @@ export const projects: Project[] = [
   },
 ];
 
-export const techNodes = [
-  { name: "Flutter", color: "#54C5F8", glow: "cyan" },
-  { name: "React", color: "#61DAFB", glow: "cyan" },
-  { name: "TypeScript", color: "#3178C6", glow: "blue" },
-  { name: "Python", color: "#3776AB", glow: "blue" },
-  { name: "Flask", color: "#EEEEEE", glow: "purple" },
-  { name: "Node.js", color: "#339933", glow: "cyan" },
-  { name: "PostgreSQL", color: "#4169E1", glow: "blue" },
-  { name: "Firebase", color: "#FFCA28", glow: "orange" },
-  { name: "Java", color: "#F89820", glow: "orange" },
-  { name: "C++", color: "#00599C", glow: "blue" },
-  { name: "Git", color: "#F05032", glow: "orange" },
-] as const;
-
 export const experience = [
   {
     org: "Masihai Pvt Ltd",
@@ -276,13 +262,3 @@ export const contact = {
   github: "https://github.com/Faizamunir720",
   linkedin: "https://linkedin.com/in/faizamunir99",
 };
-
-export const marqueeItems = [
-  "PYTHON",
-  "FLUTTER",
-  "FIREBASE",
-  "FULL STACK WEB",
-  "SYSTEM ARCHITECTURE",
-  "APPLIED CRYPTO",
-  "JAVA",
-];

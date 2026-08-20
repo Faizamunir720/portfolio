@@ -204,12 +204,6 @@ export function HeroGridCanvas() {
         : null;
     if (canvas.parentElement) ro?.observe(canvas.parentElement);
 
-    const mo = new MutationObserver(() => schedule());
-    mo.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ["data-cosmic-palette"],
-    });
-
     return () => {
       disposed = true;
       cancelAnimationFrame(raf);
@@ -217,7 +211,6 @@ export function HeroGridCanvas() {
       canvas.removeEventListener("pointermove", onMove);
       canvas.removeEventListener("pointerleave", onLeave);
       ro?.disconnect();
-      mo.disconnect();
       void disposed;
     };
   }, []);

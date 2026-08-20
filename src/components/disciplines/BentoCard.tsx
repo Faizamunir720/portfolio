@@ -20,7 +20,7 @@ function splitCardClasses(className: string) {
   return { outer: outer.join(" "), inner: inner.join(" ") };
 }
 
-/** Flat discipline panel — hairline frame, palette surfaces only. */
+/** Flat discipline panel — hairline frame, surface tokens only. */
 export function BentoCard({
   children,
   className = "",
