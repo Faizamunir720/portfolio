@@ -21,22 +21,32 @@ function CanvasHeadline() {
     const paint = () => {
       const w = parent.clientWidth;
       if (w < 8) return;
-      const line = Math.max(36, Math.min(Math.round(w * 0.155), 76));
-      const h = Math.round(line * 2.35);
       const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const ctx = canvas.getContext("2d");
+      if (!ctx) return;
+
+      const fontStack =
+        'ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif';
+      // Shrink until the full first line fits (was clipping to "Systems t")
+      let size = Math.max(36, Math.min(Math.round(w * 0.155), 76));
+      ctx.font = `800 ${size}px ${fontStack}`;
+      while (size > 22 && ctx.measureText("Systems that").width > w - 2) {
+        size -= 1;
+        ctx.font = `800 ${size}px ${fontStack}`;
+      }
+
+      const h = Math.ceil(size * 2.4);
       canvas.width = Math.floor(w * dpr);
       canvas.height = Math.floor(h * dpr);
       canvas.style.width = `${w}px`;
       canvas.style.height = `${h}px`;
-      const ctx = canvas.getContext("2d");
-      if (!ctx) return;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       ctx.clearRect(0, 0, w, h);
       ctx.fillStyle = "#000000";
-      ctx.font = `800 ${line}px ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif`;
+      ctx.font = `800 ${size}px ${fontStack}`;
       ctx.textBaseline = "top";
       ctx.fillText("Systems that", 0, 0);
-      ctx.fillText("hold.", 0, line * 1.05);
+      ctx.fillText("hold.", 0, size * 1.08);
     };
 
     paint();
@@ -48,7 +58,7 @@ function CanvasHeadline() {
   return (
     <canvas
       ref={ref}
-      className="block max-w-full"
+      className="block w-full max-w-full"
       role="img"
       aria-label="Systems that hold."
     />
@@ -68,13 +78,13 @@ export function Hero() {
 
       <div className="pointer-events-none absolute inset-0 z-20">
         <motion.div
-          className="pointer-events-auto absolute left-4 top-[20%] z-20 max-w-[calc(100%-5.5rem)] sm:left-8 sm:top-[24%] sm:max-w-none lg:left-12 lg:top-[26%]"
+          className="pointer-events-auto absolute left-4 top-[20%] z-20 w-[min(92vw,22rem)] max-w-[calc(100%-4rem)] sm:left-8 sm:top-[24%] sm:w-[min(90vw,28rem)] sm:max-w-none lg:left-12 lg:top-[26%]"
           initial={reduce ? false : { opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
           style={{ isolation: "isolate", mixBlendMode: "normal" }}
         >
-          <h1 className="m-0 max-w-[16ch] p-0 leading-none sm:max-w-[18ch]">
+          <h1 className="m-0 w-[min(100%,20ch)] max-w-[calc(100vw-5.5rem)] p-0 leading-none sm:max-w-[22ch]">
             <CanvasHeadline />
           </h1>
 
