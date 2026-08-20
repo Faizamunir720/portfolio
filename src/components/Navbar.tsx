@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { Mail } from "lucide-react";
 import { contact } from "@/data/site";
 import { GitHubIcon, LinkedInIcon } from "@/components/SocialIcons";
@@ -19,14 +19,45 @@ const TOP_REVEAL = 64;
 const LERP = 0.14;
 const LIGHT_INK = "#000000";
 
+function forceBlack(el: HTMLElement | null) {
+  if (!el) return;
+  el.style.setProperty("color", LIGHT_INK, "important");
+  el.style.setProperty("-webkit-text-fill-color", LIGHT_INK, "important");
+  el.style.setProperty("mix-blend-mode", "normal", "important");
+}
+
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const headerRef = useRef<HTMLElement>(null);
+  const brandRef = useRef<HTMLAnchorElement>(null);
+  const iconsRef = useRef<HTMLDivElement>(null);
   const lastScrollY = useRef(0);
   const targetHidden = useRef(0);
   const currentHidden = useRef(0);
   const reduceMotion = useRef(false);
   const rafRef = useRef(0);
+
+  const overHero = !scrolled;
+
+  useLayoutEffect(() => {
+    if (!overHero) {
+      brandRef.current?.style.removeProperty("color");
+      brandRef.current?.style.removeProperty("-webkit-text-fill-color");
+      brandRef.current?.style.removeProperty("mix-blend-mode");
+      iconsRef.current
+        ?.querySelectorAll<HTMLElement>("a")
+        .forEach((a) => {
+          a.style.removeProperty("color");
+          a.style.removeProperty("-webkit-text-fill-color");
+          a.style.removeProperty("mix-blend-mode");
+        });
+      return;
+    }
+    forceBlack(brandRef.current);
+    iconsRef.current
+      ?.querySelectorAll<HTMLElement>("a")
+      .forEach(forceBlack);
+  }, [overHero]);
 
   useEffect(() => {
     lastScrollY.current = window.scrollY;
@@ -93,8 +124,6 @@ export function Navbar() {
     };
   }, []);
 
-  const overHero = !scrolled;
-
   return (
     <header
       ref={headerRef}
@@ -107,14 +136,15 @@ export function Navbar() {
       style={{
         transform: "translate3d(0,0,0)",
         opacity: 1,
+        colorScheme: overHero ? "only light" : undefined,
         color: overHero ? LIGHT_INK : undefined,
       }}
     >
       <nav className="mx-auto flex w-full max-w-[1600px] items-center justify-between px-5 py-3.5 sm:px-8 lg:px-12">
         <a
+          ref={brandRef}
           href="#hero"
           className="text-sm font-semibold tracking-wide"
-          style={overHero ? { color: LIGHT_INK, WebkitTextFillColor: LIGHT_INK } : undefined}
         >
           FAIZA<span className="opacity-45">.</span>
         </a>
@@ -129,14 +159,13 @@ export function Navbar() {
               <a
                 href={l.href}
                 className={`transition-colors ${scrolled ? "hover:text-white" : ""}`}
-                style={overHero ? { color: "rgb(0 0 0 / 0.7)" } : undefined}
               >
                 {l.label}
               </a>
             </li>
           ))}
         </ul>
-        <div className="flex items-center gap-2">
+        <div ref={iconsRef} className="flex items-center gap-2">
           <a
             href={contact.github}
             target="_blank"
@@ -146,7 +175,6 @@ export function Navbar() {
                 ? "border-white/12 text-zinc-200 hover:border-white/30"
                 : "border-black/20 hover:border-black/45"
             }`}
-            style={overHero ? { color: LIGHT_INK } : undefined}
             aria-label="GitHub"
           >
             <GitHubIcon size={15} />
@@ -160,7 +188,6 @@ export function Navbar() {
                 ? "border-white/12 text-zinc-200 hover:border-white/30"
                 : "border-black/20 hover:border-black/45"
             }`}
-            style={overHero ? { color: LIGHT_INK } : undefined}
             aria-label="LinkedIn"
           >
             <LinkedInIcon size={15} />
@@ -172,7 +199,6 @@ export function Navbar() {
                 ? "border-white/12 text-zinc-200 hover:border-white/30"
                 : "border-black/20 hover:border-black/45"
             }`}
-            style={overHero ? { color: LIGHT_INK } : undefined}
             aria-label="Email"
           >
             <Mail size={15} />

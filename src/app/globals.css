@@ -39,7 +39,8 @@
   --footer-accent: #22d3ee;
   --footer-accent-fg: #05060c;
 
-  color-scheme: dark;
+  /* Do NOT set color-scheme: dark on :root — it makes Safari/Chrome treat
+     the light hero field as a dark surface and light ink wins there. */
 }
 
 @theme inline {
@@ -96,10 +97,18 @@ body {
 }
 
 /* Light hero field — black ink must win over body foreground (#f4f4f5) */
+#hero {
+  color-scheme: only light;
+}
+
 #hero .hero-light-ink,
 #hero .hero-light-ink h1 {
   color: #000000 !important;
   -webkit-text-fill-color: #000000 !important;
+  caret-color: #000000 !important;
+  opacity: 1 !important;
+  mix-blend-mode: normal !important;
+  filter: none !important;
 }
 
 #hero .hero-light-ink .hero-cta-fill {
@@ -107,10 +116,15 @@ body {
   -webkit-text-fill-color: #f4f4f5 !important;
 }
 
+header[data-over-hero="true"] {
+  color-scheme: only light;
+}
+
 header[data-over-hero="true"],
 header[data-over-hero="true"] a {
   color: #000000 !important;
   -webkit-text-fill-color: #000000 !important;
+  mix-blend-mode: normal !important;
 }
 
 header[data-over-hero="true"] a {
