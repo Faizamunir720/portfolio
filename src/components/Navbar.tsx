@@ -21,11 +21,24 @@ const LERP = 0.14;
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const headerRef = useRef<HTMLElement>(null);
+  const brandRef = useRef<HTMLAnchorElement>(null);
   const lastScrollY = useRef(0);
   const targetHidden = useRef(0);
   const currentHidden = useRef(0);
   const reduceMotion = useRef(false);
   const rafRef = useRef(0);
+
+  useEffect(() => {
+    const brand = brandRef.current;
+    if (!brand) return;
+    if (scrolled) {
+      brand.style.removeProperty("color");
+      brand.style.removeProperty("-webkit-text-fill-color");
+    } else {
+      brand.style.setProperty("color", "#000000", "important");
+      brand.style.setProperty("-webkit-text-fill-color", "#000000", "important");
+    }
+  }, [scrolled]);
 
   useEffect(() => {
     lastScrollY.current = window.scrollY;
@@ -105,13 +118,9 @@ export function Navbar() {
     >
       <nav className="mx-auto flex w-full max-w-[1600px] items-center justify-between px-5 py-3.5 sm:px-8 lg:px-12">
         <a
+          ref={brandRef}
           href="#hero"
           className="nav-brand text-sm font-semibold tracking-wide"
-          style={
-            scrolled
-              ? undefined
-              : { color: "#05060c", WebkitTextFillColor: "#05060c" }
-          }
         >
           FAIZA<span className="opacity-45">.</span>
         </a>

@@ -1,5 +1,6 @@
 "use client";
 
+import { useLayoutEffect, useRef } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import { Download } from "lucide-react";
 import { contact } from "@/data/site";
@@ -7,20 +8,32 @@ import { GitHubIcon, LinkedInIcon } from "@/components/SocialIcons";
 import { HeroGridCanvas } from "@/components/HeroGridCanvas";
 import { RollingTextButton } from "@/components/RollingTextButton";
 
+const HERO_INK = "#000000";
+
 /**
- * Cosmic hero composition (desktop + mobile):
- * - Title sits on the LIGHT grid field → dark ink, no fill/scrim
- * - CTAs cluster under the title (left), wrap naturally — never full-bleed
- * - Lede + gif sit on the DARK field (bottom-right)
+ * Cosmic hero: title on LIGHT field must be pure black.
+ * Palette CSS uses !important on h1 → light ink; React inline styles lose that fight.
+ * setProperty(..., "important") is the only reliable override.
  */
 export function Hero() {
   const reduce = useReducedMotion();
+  const titleRef = useRef<HTMLHeadingElement>(null);
+
+  useLayoutEffect(() => {
+    const el = titleRef.current;
+    if (!el) return;
+    el.style.setProperty("color", HERO_INK, "important");
+    el.style.setProperty("-webkit-text-fill-color", HERO_INK, "important");
+    el.style.setProperty("opacity", "1", "important");
+    el.style.setProperty("mix-blend-mode", "normal", "important");
+  }, []);
 
   return (
     <section
       id="hero"
       className="relative h-[68svh] min-h-[440px] max-h-[620px] w-full overflow-hidden sm:h-[72svh] sm:min-h-[480px] sm:max-h-[680px] lg:h-[74svh] lg:max-h-[720px]"
       aria-label="Introduction"
+      style={{ colorScheme: "only light" }}
     >
       <HeroGridCanvas />
 
@@ -32,13 +45,12 @@ export function Hero() {
           transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
         >
           <h1
-            className="hero-title max-w-[14ch] text-[clamp(2rem,8.5vw,4.75rem)] font-extrabold leading-[0.95] tracking-tight sm:max-w-[18ch]"
-            style={{ color: "#05060c", WebkitTextFillColor: "#05060c" }}
+            ref={titleRef}
+            className="hero-title max-w-[14ch] text-[clamp(2rem,8.5vw,4.75rem)] font-extrabold leading-[0.95] tracking-tight text-black sm:max-w-[18ch]"
           >
             Systems that hold.
           </h1>
 
-          {/* Same cluster language as desktop: wrap, hug content, left-aligned */}
           <div className="relative z-20 mt-4 flex flex-wrap items-center gap-2 sm:mt-6 sm:gap-3">
             <RollingTextButton
               href="#work"

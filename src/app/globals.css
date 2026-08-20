@@ -25,8 +25,8 @@
 
 /* Hero copy must beat palette heading overrides on every swatch set */
 #hero .hero-title {
-  color: #05060c !important;
-  -webkit-text-fill-color: #05060c !important;
+  color: #000 !important;
+  -webkit-text-fill-color: #000 !important;
   background: transparent !important;
 }
 
@@ -540,26 +540,24 @@ html[data-cosmic-palette] .text-slate-200 {
   color: var(--cp-ink-soft) !important;
 }
 
+/* Do NOT force h1 here — hero title lives on the light field and must stay black */
+html[data-cosmic-palette] h2,
+html[data-cosmic-palette] h3,
 html[data-cosmic-palette] .text-zinc-300,
 html[data-cosmic-palette] .text-zinc-200,
 html[data-cosmic-palette] .text-zinc-100,
 html[data-cosmic-palette] .text-zinc-50,
-html[data-cosmic-palette] .text-white,
-html[data-cosmic-palette] h1:not(.hero-title),
-html[data-cosmic-palette] h2,
-html[data-cosmic-palette] h3 {
+html[data-cosmic-palette] .text-white {
   color: var(--cp-ink) !important;
 }
 
-/*
-  Hero title MUST stay black on the light grid.
-  Hardcoded ink — do not use --cp-ink (light on dark themes).
-*/
+/* Hard black — do not use CSS variables (LightningCSS may rewrite them) */
 html[data-cosmic-palette] #hero h1.hero-title,
 #hero h1.hero-title,
+#hero .hero-title,
 .hero-title {
-  color: #05060c !important;
-  -webkit-text-fill-color: #05060c !important;
+  color: #000 !important;
+  -webkit-text-fill-color: #000 !important;
   background: transparent !important;
   background-color: transparent !important;
   text-shadow: none !important;
