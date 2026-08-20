@@ -25,37 +25,36 @@
 
 /* Hero copy must beat palette heading overrides on every swatch set */
 #hero .hero-title {
-  color: var(--hero-dark) !important;
-  -webkit-text-fill-color: var(--hero-dark) !important;
+  color: #05060c !important;
+  -webkit-text-fill-color: #05060c !important;
   background: transparent !important;
 }
 
 #hero .hero-lede {
-  color: var(--hero-light) !important;
+  color: #f4f4f5 !important;
 }
 
 #hero .hero-cta-fill {
-  background: var(--hero-dark) !important;
-  color: var(--hero-light) !important;
+  background: #05060c !important;
+  color: #f4f4f5 !important;
 }
 
 #hero .hero-cta-ghost {
-  border-color: color-mix(in srgb, var(--hero-dark) 28%, transparent) !important;
-  color: var(--hero-dark) !important;
-  /* Opaque chip so grid cells / minesweeper numbers never show through */
-  background: var(--hero-light) !important;
+  border-color: rgb(5 6 12 / 0.28) !important;
+  color: #05060c !important;
+  background: #f4f4f5 !important;
 }
 
 #hero .hero-cta-ghost:hover {
-  border-color: color-mix(in srgb, var(--hero-dark) 55%, transparent) !important;
+  border-color: rgb(5 6 12 / 0.55) !important;
 }
 
 #hero .hero-social {
   position: relative;
   z-index: 21;
-  color: var(--hero-dark) !important;
-  background: var(--hero-light) !important;
-  box-shadow: 0 1px 0 color-mix(in srgb, var(--hero-dark) 8%, transparent);
+  color: #05060c !important;
+  background: #f4f4f5 !important;
+  box-shadow: 0 1px 0 rgb(5 6 12 / 0.08);
 }
 
 .cosmic-band {
@@ -93,9 +92,8 @@
 }
 
 .footer-wordmark {
-  font-size: clamp(1.75rem, 12vw, 7.5rem);
+  font-size: clamp(1.65rem, 10vw, 7.5rem);
   max-width: 100%;
-  overflow-wrap: anywhere;
   -webkit-text-size-adjust: 100%;
   text-rendering: geometricPrecision;
 }
@@ -547,66 +545,70 @@ html[data-cosmic-palette] .text-zinc-200,
 html[data-cosmic-palette] .text-zinc-100,
 html[data-cosmic-palette] .text-zinc-50,
 html[data-cosmic-palette] .text-white,
-html[data-cosmic-palette] h1,
+html[data-cosmic-palette] h1:not(.hero-title),
 html[data-cosmic-palette] h2,
 html[data-cosmic-palette] h3 {
   color: var(--cp-ink) !important;
 }
 
 /*
-  Hero split field (Cosmic):
-  - Title lives on LIGHT cells → dark ink, transparent background (no scrim/pill)
-  - Lede lives on DARK cells → light ink
-  Must beat palette h1 → --cp-ink (light) override.
+  Hero title MUST stay black on the light grid.
+  Hardcoded ink — do not use --cp-ink (light on dark themes).
 */
 html[data-cosmic-palette] #hero h1.hero-title,
-#hero h1.hero-title {
-  color: var(--hero-dark) !important;
-  -webkit-text-fill-color: var(--hero-dark) !important;
+#hero h1.hero-title,
+.hero-title {
+  color: #05060c !important;
+  -webkit-text-fill-color: #05060c !important;
   background: transparent !important;
   background-color: transparent !important;
-  text-shadow: none;
+  text-shadow: none !important;
+  mix-blend-mode: normal !important;
+  filter: none !important;
+  opacity: 1 !important;
 }
 
 html[data-cosmic-palette] #hero .hero-lede,
 #hero .hero-lede {
-  color: var(--hero-light) !important;
-  -webkit-text-fill-color: var(--hero-light) !important;
+  color: #f4f4f5 !important;
+  -webkit-text-fill-color: #f4f4f5 !important;
 }
 
 html[data-cosmic-palette] #hero .hero-cta-fill {
-  background: var(--hero-dark) !important;
-  color: var(--hero-light) !important;
-  -webkit-text-fill-color: var(--hero-light) !important;
+  background: #05060c !important;
+  color: #f4f4f5 !important;
+  -webkit-text-fill-color: #f4f4f5 !important;
 }
 
 html[data-cosmic-palette] #hero .hero-cta-ghost,
-html[data-cosmic-palette] #hero .hero-social {
-  border-color: color-mix(in srgb, var(--hero-dark) 28%, transparent) !important;
-  color: var(--hero-dark) !important;
-  -webkit-text-fill-color: var(--hero-dark) !important;
-  background: var(--hero-light) !important;
-  background-color: var(--hero-light) !important;
+html[data-cosmic-palette] #hero .hero-social,
+#hero .hero-cta-ghost,
+#hero .hero-social {
+  border-color: rgb(5 6 12 / 0.28) !important;
+  color: #05060c !important;
+  -webkit-text-fill-color: #05060c !important;
+  background: #f4f4f5 !important;
+  background-color: #f4f4f5 !important;
 }
 
 /* Brand + icons stay dark while over the light hero field */
 html[data-cosmic-palette] header.fixed.cosmic-nav-top,
 html[data-cosmic-palette] header.fixed.cosmic-nav-top a {
-  color: var(--hero-dark) !important;
-  -webkit-text-fill-color: var(--hero-dark) !important;
+  color: #05060c !important;
+  -webkit-text-fill-color: #05060c !important;
 }
 
 html[data-cosmic-palette] header.fixed.cosmic-nav-top a[aria-label] {
-  border-color: color-mix(in srgb, var(--hero-dark) 22%, transparent) !important;
-  color: var(--hero-dark) !important;
-  -webkit-text-fill-color: var(--hero-dark) !important;
+  border-color: rgb(5 6 12 / 0.22) !important;
+  color: #05060c !important;
+  -webkit-text-fill-color: #05060c !important;
   background: transparent !important;
 }
 
 html[data-cosmic-palette] header.fixed.cosmic-nav-top .nav-brand,
 header.fixed.cosmic-nav-top .nav-brand {
-  color: var(--hero-dark) !important;
-  -webkit-text-fill-color: var(--hero-dark) !important;
+  color: #05060c !important;
+  -webkit-text-fill-color: #05060c !important;
 }
 
 /* Cyan accents read as wash on cream — map to palette accent */

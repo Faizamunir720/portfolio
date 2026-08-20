@@ -107,6 +107,11 @@ export function Navbar() {
         <a
           href="#hero"
           className="nav-brand text-sm font-semibold tracking-wide"
+          style={
+            scrolled
+              ? undefined
+              : { color: "#05060c", WebkitTextFillColor: "#05060c" }
+          }
         >
           FAIZA<span className="opacity-45">.</span>
         </a>

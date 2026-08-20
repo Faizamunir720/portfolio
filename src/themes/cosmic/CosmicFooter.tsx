@@ -126,7 +126,7 @@ export function CosmicFooter() {
             </div>
           </div>
 
-          <div className="relative min-w-0 select-none">
+          <div className="flex flex-col items-center gap-3 sm:flex-row sm:items-end sm:justify-between sm:gap-6">
             {!reduce ? (
               // eslint-disable-next-line @next/next/no-img-element
               <img
@@ -134,14 +134,16 @@ export function CosmicFooter() {
                 alt="See you soon"
                 width={240}
                 height={154}
-                className="pointer-events-none absolute bottom-0 left-0 z-10 h-[110px] w-auto rounded-sm border border-[var(--footer-ink)]/15 object-cover sm:h-[140px] lg:h-[160px]"
+                className="pointer-events-none relative z-10 h-[96px] w-auto shrink-0 rounded-sm border border-[var(--footer-ink)]/15 object-cover sm:h-[140px] lg:h-[160px]"
                 loading="lazy"
                 decoding="async"
               />
-            ) : null}
-            <div className="overflow-hidden">
+            ) : (
+              <span className="hidden sm:block sm:w-[140px] lg:w-[160px]" aria-hidden />
+            )}
+            <div className="min-w-0 flex-1 overflow-hidden">
               <motion.p
-                className="footer-wordmark text-center font-[family-name:var(--font-space-grotesk)] font-bold uppercase leading-[0.82] tracking-[-0.04em] text-[var(--footer-ink)]"
+                className="footer-wordmark text-center font-[family-name:var(--font-space-grotesk)] font-bold uppercase leading-[0.82] tracking-[-0.04em] text-[var(--footer-ink)] sm:text-right"
                 style={displayStyle}
                 aria-label="Faiza Munir"
               >

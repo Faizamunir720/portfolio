@@ -31,7 +31,10 @@ export function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
         >
-          <h1 className="hero-title max-w-[14ch] text-[clamp(2rem,8.5vw,4.75rem)] font-extrabold leading-[0.95] tracking-tight sm:max-w-[18ch]">
+          <h1
+            className="hero-title max-w-[14ch] text-[clamp(2rem,8.5vw,4.75rem)] font-extrabold leading-[0.95] tracking-tight sm:max-w-[18ch]"
+            style={{ color: "#05060c", WebkitTextFillColor: "#05060c" }}
+          >
             Systems that hold.
           </h1>
 
