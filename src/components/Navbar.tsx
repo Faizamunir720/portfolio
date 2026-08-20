@@ -18,6 +18,36 @@ const SHOW_DELTA = 8;
 const TOP_REVEAL = 64;
 const LERP = 0.14;
 
+/** Brand painted as black pixels — no background pill. */
+function CanvasBrand({ ink }: { ink: "#000000" | "#ffffff" }) {
+  const ref = useRef<HTMLCanvasElement>(null);
+
+  useEffect(() => {
+    const canvas = ref.current;
+    if (!canvas) return;
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const w = 78;
+    const h = 20;
+    canvas.width = Math.floor(w * dpr);
+    canvas.height = Math.floor(h * dpr);
+    canvas.style.width = `${w}px`;
+    canvas.style.height = `${h}px`;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.clearRect(0, 0, w, h);
+    ctx.fillStyle = ink;
+    ctx.font =
+      '600 14px ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif';
+    ctx.textBaseline = "middle";
+    ctx.fillText("FAIZA.", 0, h / 2);
+  }, [ink]);
+
+  return (
+    <canvas ref={ref} className="block" role="img" aria-label="FAIZA" />
+  );
+}
+
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const headerRef = useRef<HTMLElement>(null);
@@ -112,28 +142,8 @@ export function Navbar() {
       }}
     >
       <nav className="mx-auto flex w-full max-w-[1600px] items-center justify-between px-5 py-3.5 sm:px-8 lg:px-12">
-        {/* Solid plate when over light hero — brand cannot bleach into the canvas */}
-        <a
-          href="#hero"
-          aria-label="FAIZA"
-          className={
-            overHero
-              ? "rounded-full bg-[#f4f4f5] px-3 py-1.5 text-sm font-semibold tracking-wide text-black"
-              : "px-1 text-sm font-semibold tracking-wide text-white"
-          }
-          style={
-            overHero
-              ? {
-                  color: "#000000",
-                  WebkitTextFillColor: "#000000",
-                  isolation: "isolate",
-                  mixBlendMode: "normal",
-                  backgroundColor: "#f4f4f5",
-                }
-              : undefined
-          }
-        >
-          FAIZA<span className="opacity-45">.</span>
+        <a href="#hero" className="inline-flex items-center">
+          <CanvasBrand ink={overHero ? "#000000" : "#ffffff"} />
         </a>
         <ul
           className={`hidden items-center gap-6 text-[11px] font-medium uppercase tracking-[0.16em] md:flex ${
@@ -153,22 +163,7 @@ export function Navbar() {
             </li>
           ))}
         </ul>
-        <div
-          className={
-            overHero
-              ? "flex items-center gap-2 rounded-full bg-[#f4f4f5] px-2 py-1"
-              : "flex items-center gap-2"
-          }
-          style={
-            overHero
-              ? {
-                  isolation: "isolate",
-                  mixBlendMode: "normal",
-                  backgroundColor: "#f4f4f5",
-                }
-              : undefined
-          }
-        >
+        <div className="flex items-center gap-2">
           <a
             href={contact.github}
             target="_blank"
@@ -176,7 +171,7 @@ export function Navbar() {
             className={`inline-flex h-9 w-9 items-center justify-center rounded-full border transition ${
               scrolled
                 ? "border-white/12 hover:border-white/30"
-                : "border-black/30 hover:border-black/55"
+                : "border-black/30 bg-[#f4f4f5]/90 hover:border-black/55"
             }`}
             aria-label="GitHub"
           >
@@ -189,7 +184,7 @@ export function Navbar() {
             className={`inline-flex h-9 w-9 items-center justify-center rounded-full border transition ${
               scrolled
                 ? "border-white/12 hover:border-white/30"
-                : "border-black/30 hover:border-black/55"
+                : "border-black/30 bg-[#f4f4f5]/90 hover:border-black/55"
             }`}
             aria-label="LinkedIn"
           >
@@ -200,7 +195,7 @@ export function Navbar() {
             className={`inline-flex h-9 w-9 items-center justify-center rounded-full border transition ${
               scrolled
                 ? "border-white/12 hover:border-white/30"
-                : "border-black/30 hover:border-black/55"
+                : "border-black/30 bg-[#f4f4f5]/90 hover:border-black/55"
             }`}
             aria-label="Email"
           >

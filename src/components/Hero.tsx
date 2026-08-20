@@ -8,10 +8,7 @@ import { GitHubIcon, LinkedInIcon } from "@/components/SocialIcons";
 import { HeroGridCanvas } from "@/components/HeroGridCanvas";
 import { RollingTextButton } from "@/components/RollingTextButton";
 
-/**
- * Draw the headline as canvas pixels (not CSS color / SVG fill).
- * Parent compositing cannot recolor bitmap ink the way it can bleach HTML/SVG.
- */
+/** Headline as black canvas pixels — readable on the light grid, no card behind it. */
 function CanvasHeadline() {
   const ref = useRef<HTMLCanvasElement>(null);
 
@@ -24,7 +21,7 @@ function CanvasHeadline() {
     const paint = () => {
       const w = parent.clientWidth;
       if (w < 8) return;
-      const line = Math.max(32, Math.min(Math.round(w * 0.145), 76));
+      const line = Math.max(36, Math.min(Math.round(w * 0.155), 76));
       const h = Math.round(line * 2.35);
       const dpr = Math.min(window.devicePixelRatio || 1, 2);
       canvas.width = Math.floor(w * dpr);
@@ -38,7 +35,6 @@ function CanvasHeadline() {
       ctx.fillStyle = "#000000";
       ctx.font = `800 ${line}px ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif`;
       ctx.textBaseline = "top";
-      ctx.letterSpacing = "-0.04em";
       ctx.fillText("Systems that", 0, 0);
       ctx.fillText("hold.", 0, line * 1.05);
     };
@@ -72,59 +68,49 @@ export function Hero() {
 
       <div className="pointer-events-none absolute inset-0 z-20">
         <motion.div
-          className="pointer-events-auto absolute left-3 top-[18%] z-20 max-w-[calc(100%-4.5rem)] sm:left-8 sm:top-[22%] sm:max-w-none lg:left-12 lg:top-[24%]"
+          className="pointer-events-auto absolute left-4 top-[20%] z-20 max-w-[calc(100%-5.5rem)] sm:left-8 sm:top-[24%] sm:max-w-none lg:left-12 lg:top-[26%]"
           initial={reduce ? false : { opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+          style={{ isolation: "isolate", mixBlendMode: "normal" }}
         >
-          {/* Opaque isolated plate — stops canvas mix/compositing from bleaching ink */}
-          <div
-            className="hero-light-plate rounded-2xl px-3 py-3 sm:px-4 sm:py-4"
-            style={{
-              isolation: "isolate",
-              mixBlendMode: "normal",
-              backgroundColor: "#f4f4f5",
-              color: "#000000",
-            }}
-          >
-            <h1 className="m-0 p-0 leading-none">
-              <CanvasHeadline />
-            </h1>
+          <h1 className="m-0 max-w-[16ch] p-0 leading-none sm:max-w-[18ch]">
+            <CanvasHeadline />
+          </h1>
 
-            <div className="relative z-20 mt-4 flex flex-wrap items-center gap-2 sm:mt-5 sm:gap-3">
-              <RollingTextButton
-                href="#work"
-                label="View Projects"
-                rollLabel="See the work"
-                className="rounded-full bg-[#05060c] px-3.5 py-2 text-[13px] font-semibold text-[#f4f4f5] sm:px-5 sm:py-2.5 sm:text-sm"
-              />
-              <RollingTextButton
-                href="#"
-                label="Download CV"
-                rollLabel="Get the PDF"
-                showChevron={false}
-                icon={<Download size={14} color="#000000" />}
-                className="rounded-full border-2 border-[#000000] bg-white px-3.5 py-2 text-[13px] font-semibold text-[#000000] sm:px-5 sm:py-2.5 sm:text-sm"
-              />
-              <a
-                href={contact.github}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full border-2 border-[#000000] bg-white sm:h-10 sm:w-10"
-                aria-label="GitHub"
-              >
-                <GitHubIcon size={15} color="#000000" />
-              </a>
-              <a
-                href={contact.linkedin}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full border-2 border-[#000000] bg-white sm:h-10 sm:w-10"
-                aria-label="LinkedIn"
-              >
-                <LinkedInIcon size={15} color="#000000" />
-              </a>
-            </div>
+          <div className="relative z-20 mt-4 flex flex-wrap items-center gap-2 sm:mt-6 sm:gap-3">
+            <RollingTextButton
+              href="#work"
+              label="View Projects"
+              rollLabel="See the work"
+              className="rounded-full bg-[#05060c] px-3.5 py-2 text-[13px] font-semibold text-[#f4f4f5] sm:px-5 sm:py-2.5 sm:text-sm"
+            />
+            <RollingTextButton
+              href="#"
+              label="Download CV"
+              rollLabel="Get the PDF"
+              showChevron={false}
+              icon={<Download size={14} color="#000000" />}
+              className="rounded-full border-2 border-[#000000] bg-[#f4f4f5] px-3.5 py-2 text-[13px] font-semibold text-[#000000] sm:px-5 sm:py-2.5 sm:text-sm"
+            />
+            <a
+              href={contact.github}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full border-2 border-[#000000] bg-[#f4f4f5] sm:h-10 sm:w-10"
+              aria-label="GitHub"
+            >
+              <GitHubIcon size={15} color="#000000" />
+            </a>
+            <a
+              href={contact.linkedin}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full border-2 border-[#000000] bg-[#f4f4f5] sm:h-10 sm:w-10"
+              aria-label="LinkedIn"
+            >
+              <LinkedInIcon size={15} color="#000000" />
+            </a>
           </div>
         </motion.div>
 

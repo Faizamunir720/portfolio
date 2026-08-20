@@ -96,16 +96,8 @@ body {
   outline-offset: 3px;
 }
 
-/* Light hero UI sits on an opaque plate — never inherit body (light) ink onto the canvas */
 #hero {
   color-scheme: only light;
-}
-
-#hero .hero-light-plate {
-  color: #000000 !important;
-  -webkit-text-fill-color: #000000 !important;
-  mix-blend-mode: normal !important;
-  isolation: isolate;
 }
 
 header[data-over-hero="true"] {
