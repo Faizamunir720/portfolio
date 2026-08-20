@@ -45,7 +45,10 @@ export function Experience() {
   const job = experience[0];
   const reduce = useReducedMotion();
   const focusRef = useRef<HTMLDivElement>(null);
-  const focusInView = useInView(focusRef, { amount: 0.4 });
+  const contribRef = useRef<HTMLDivElement>(null);
+  const focusInView = useInView(focusRef, { amount: 0.35 });
+  const contribInView = useInView(contribRef, { amount: 0.15 });
+  const pauseUntil = useRef(0);
 
   const features = useMemo<FeatureCell[]>(
     () => [
@@ -80,6 +83,11 @@ export function Experience() {
   const [order, setOrder] = useState(() => features.map((f) => f.id));
   const [activeNote, setActiveNote] = useState(0);
 
+  const selectNote = (i: number) => {
+    pauseUntil.current = Date.now() + 5000;
+    setActiveNote(i);
+  };
+
   useEffect(() => {
     setOrder(features.map((f) => f.id));
   }, [features]);
@@ -94,14 +102,15 @@ export function Experience() {
     return () => window.clearTimeout(t);
   }, [order, focusInView, reduce]);
 
-  // Cycle contributions with exit animations
+  // Cycle contributions while the contributions block is on screen (~2s)
   useEffect(() => {
-    if (reduce || !focusInView) return;
+    if (reduce || !contribInView) return;
     const t = window.setInterval(() => {
+      if (Date.now() < pauseUntil.current) return;
       setActiveNote((i) => (i + 1) % job.contributions.length);
-    }, 3200);
+    }, 2000);
     return () => window.clearInterval(t);
-  }, [focusInView, reduce, job.contributions.length]);
+  }, [contribInView, reduce, job.contributions.length]);
 
   const ordered = order
     .map((id) => features.find((f) => f.id === id)!)
@@ -225,7 +234,7 @@ export function Experience() {
           </div>
 
           {/* RIGHT — grows with left so the featured panel fills leftover height */}
-          <div className="flex min-h-0 flex-col lg:col-span-7">
+          <div ref={contribRef} className="flex min-h-0 flex-col lg:col-span-7">
             <div className="flex items-baseline justify-between gap-3 border-b border-[var(--hairline)] pb-3">
               <p className="font-[family-name:var(--font-ibm-plex-mono)] text-[12px] font-medium uppercase tracking-[0.16em] text-[var(--cp-ink-soft,var(--muted))]">
                 Engineering contributions
@@ -271,7 +280,7 @@ export function Experience() {
                     type="button"
                     role="tab"
                     aria-selected={active}
-                    onClick={() => setActiveNote(i)}
+                    onClick={() => selectNote(i)}
                     className={`inline-flex h-10 min-w-10 items-center justify-center border px-2.5 font-[family-name:var(--font-ibm-plex-mono)] text-[12px] font-medium tabular-nums transition ${
                       active
                         ? "border-[color-mix(in_srgb,var(--cp-accent)_45%,transparent)] bg-[color-mix(in_srgb,var(--cp-accent)_10%,transparent)] text-[var(--cp-accent-2,var(--cp-accent))]"
@@ -292,7 +301,7 @@ export function Experience() {
                   <li key={point}>
                     <button
                       type="button"
-                      onClick={() => setActiveNote(i)}
+                      onClick={() => selectNote(i)}
                       className={`flex w-full items-start gap-3 border px-3.5 py-3 text-left transition ${
                         active
                           ? "border-[color-mix(in_srgb,var(--cp-accent)_45%,transparent)] bg-[color-mix(in_srgb,var(--cp-accent)_10%,transparent)]"

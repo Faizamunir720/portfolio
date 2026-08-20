@@ -104,7 +104,10 @@ export function Navbar() {
       style={{ transform: "translate3d(0,0,0)", opacity: 1 }}
     >
       <nav className="mx-auto flex w-full max-w-[1600px] items-center justify-between px-5 py-3.5 sm:px-8 lg:px-12">
-        <a href="#hero" className="text-sm font-semibold tracking-wide">
+        <a
+          href="#hero"
+          className="nav-brand text-sm font-semibold tracking-wide"
+        >
           FAIZA<span className="opacity-45">.</span>
         </a>
         <ul

@@ -26,6 +26,8 @@
 /* Hero copy must beat palette heading overrides on every swatch set */
 #hero .hero-title {
   color: var(--hero-dark) !important;
+  -webkit-text-fill-color: var(--hero-dark) !important;
+  background: transparent !important;
 }
 
 #hero .hero-lede {
@@ -552,41 +554,59 @@ html[data-cosmic-palette] h3 {
 }
 
 /*
-  Hero split field: title sits on LIGHT cells, lede on DARK cells.
-  Must beat the palette h1 → --cp-ink (light) override above.
+  Hero split field (Cosmic):
+  - Title lives on LIGHT cells → dark ink, transparent background (no scrim/pill)
+  - Lede lives on DARK cells → light ink
+  Must beat palette h1 → --cp-ink (light) override.
 */
 html[data-cosmic-palette] #hero h1.hero-title,
 #hero h1.hero-title {
   color: var(--hero-dark) !important;
-  -webkit-text-fill-color: var(--hero-dark);
+  -webkit-text-fill-color: var(--hero-dark) !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  text-shadow: none;
 }
 
 html[data-cosmic-palette] #hero .hero-lede,
 #hero .hero-lede {
   color: var(--hero-light) !important;
+  -webkit-text-fill-color: var(--hero-light) !important;
 }
 
 html[data-cosmic-palette] #hero .hero-cta-fill {
   background: var(--hero-dark) !important;
   color: var(--hero-light) !important;
+  -webkit-text-fill-color: var(--hero-light) !important;
 }
 
 html[data-cosmic-palette] #hero .hero-cta-ghost,
 html[data-cosmic-palette] #hero .hero-social {
   border-color: color-mix(in srgb, var(--hero-dark) 28%, transparent) !important;
   color: var(--hero-dark) !important;
+  -webkit-text-fill-color: var(--hero-dark) !important;
   background: var(--hero-light) !important;
+  background-color: var(--hero-light) !important;
 }
 
 /* Brand + icons stay dark while over the light hero field */
 html[data-cosmic-palette] header.fixed.cosmic-nav-top,
 html[data-cosmic-palette] header.fixed.cosmic-nav-top a {
   color: var(--hero-dark) !important;
+  -webkit-text-fill-color: var(--hero-dark) !important;
 }
 
 html[data-cosmic-palette] header.fixed.cosmic-nav-top a[aria-label] {
   border-color: color-mix(in srgb, var(--hero-dark) 22%, transparent) !important;
   color: var(--hero-dark) !important;
+  -webkit-text-fill-color: var(--hero-dark) !important;
+  background: transparent !important;
+}
+
+html[data-cosmic-palette] header.fixed.cosmic-nav-top .nav-brand,
+header.fixed.cosmic-nav-top .nav-brand {
+  color: var(--hero-dark) !important;
+  -webkit-text-fill-color: var(--hero-dark) !important;
 }
 
 /* Cyan accents read as wash on cream — map to palette accent */
