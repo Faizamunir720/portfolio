@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Mail } from "lucide-react";
 import { contact } from "@/data/site";
 import { GitHubIcon, LinkedInIcon } from "@/components/SocialIcons";
@@ -17,47 +17,51 @@ const HIDE_DELTA = 12;
 const SHOW_DELTA = 8;
 const TOP_REVEAL = 64;
 const LERP = 0.14;
-const LIGHT_INK = "#000000";
 
-function forceBlack(el: HTMLElement | null) {
-  if (!el) return;
-  el.style.setProperty("color", LIGHT_INK, "important");
-  el.style.setProperty("-webkit-text-fill-color", LIGHT_INK, "important");
-  el.style.setProperty("mix-blend-mode", "normal", "important");
+function BrandMark({ ink }: { ink: "light" | "dark" }) {
+  const fill = ink === "light" ? "#000000" : "#ffffff";
+  return (
+    <svg
+      width="72"
+      height="18"
+      viewBox="0 0 72 18"
+      className="block"
+      aria-hidden
+    >
+      <text
+        x="0"
+        y="14"
+        fill={fill}
+        fontSize="14"
+        fontWeight="600"
+        fontFamily="ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif"
+        letterSpacing="0.04em"
+      >
+        FAIZA
+      </text>
+      <text
+        x="58"
+        y="14"
+        fill={fill}
+        fillOpacity="0.45"
+        fontSize="14"
+        fontWeight="600"
+        fontFamily="ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif"
+      >
+        .
+      </text>
+    </svg>
+  );
 }
 
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const headerRef = useRef<HTMLElement>(null);
-  const brandRef = useRef<HTMLAnchorElement>(null);
-  const iconsRef = useRef<HTMLDivElement>(null);
   const lastScrollY = useRef(0);
   const targetHidden = useRef(0);
   const currentHidden = useRef(0);
   const reduceMotion = useRef(false);
   const rafRef = useRef(0);
-
-  const overHero = !scrolled;
-
-  useLayoutEffect(() => {
-    if (!overHero) {
-      brandRef.current?.style.removeProperty("color");
-      brandRef.current?.style.removeProperty("-webkit-text-fill-color");
-      brandRef.current?.style.removeProperty("mix-blend-mode");
-      iconsRef.current
-        ?.querySelectorAll<HTMLElement>("a")
-        .forEach((a) => {
-          a.style.removeProperty("color");
-          a.style.removeProperty("-webkit-text-fill-color");
-          a.style.removeProperty("mix-blend-mode");
-        });
-      return;
-    }
-    forceBlack(brandRef.current);
-    iconsRef.current
-      ?.querySelectorAll<HTMLElement>("a")
-      .forEach(forceBlack);
-  }, [overHero]);
 
   useEffect(() => {
     lastScrollY.current = window.scrollY;
@@ -124,6 +128,9 @@ export function Navbar() {
     };
   }, []);
 
+  const overHero = !scrolled;
+  const iconInk = overHero ? "#000000" : "#e4e4e7";
+
   return (
     <header
       ref={headerRef}
@@ -133,51 +140,43 @@ export function Navbar() {
           ? "border-b border-white/10 bg-[#05060c]/92 text-white"
           : "border-b border-transparent bg-transparent"
       }`}
-      style={{
-        transform: "translate3d(0,0,0)",
-        opacity: 1,
-        colorScheme: overHero ? "only light" : undefined,
-        color: overHero ? LIGHT_INK : undefined,
-      }}
+      style={{ transform: "translate3d(0,0,0)", opacity: 1 }}
     >
       <nav className="mx-auto flex w-full max-w-[1600px] items-center justify-between px-5 py-3.5 sm:px-8 lg:px-12">
-        <a
-          ref={brandRef}
-          href="#hero"
-          className="text-sm font-semibold tracking-wide"
-        >
-          FAIZA<span className="opacity-45">.</span>
+        <a href="#hero" aria-label="FAIZA">
+          <BrandMark ink={overHero ? "light" : "dark"} />
         </a>
         <ul
           className={`hidden items-center gap-6 text-[11px] font-medium uppercase tracking-[0.16em] md:flex ${
-            scrolled ? "text-zinc-400" : ""
+            scrolled ? "text-zinc-400" : "text-black/70"
           }`}
-          style={overHero ? { color: "rgb(0 0 0 / 0.7)" } : undefined}
         >
           {links.map((l) => (
             <li key={l.href}>
               <a
                 href={l.href}
-                className={`transition-colors ${scrolled ? "hover:text-white" : ""}`}
+                className={`transition-colors ${
+                  scrolled ? "hover:text-white" : "hover:text-black"
+                }`}
               >
                 {l.label}
               </a>
             </li>
           ))}
         </ul>
-        <div ref={iconsRef} className="flex items-center gap-2">
+        <div className="flex items-center gap-2">
           <a
             href={contact.github}
             target="_blank"
             rel="noopener noreferrer"
             className={`inline-flex h-9 w-9 items-center justify-center rounded-full border transition ${
               scrolled
-                ? "border-white/12 text-zinc-200 hover:border-white/30"
-                : "border-black/20 hover:border-black/45"
+                ? "border-white/12 hover:border-white/30"
+                : "border-black/25 hover:border-black/50"
             }`}
             aria-label="GitHub"
           >
-            <GitHubIcon size={15} />
+            <GitHubIcon size={15} color={iconInk} />
           </a>
           <a
             href={contact.linkedin}
@@ -185,23 +184,23 @@ export function Navbar() {
             rel="noopener noreferrer"
             className={`inline-flex h-9 w-9 items-center justify-center rounded-full border transition ${
               scrolled
-                ? "border-white/12 text-zinc-200 hover:border-white/30"
-                : "border-black/20 hover:border-black/45"
+                ? "border-white/12 hover:border-white/30"
+                : "border-black/25 hover:border-black/50"
             }`}
             aria-label="LinkedIn"
           >
-            <LinkedInIcon size={15} />
+            <LinkedInIcon size={15} color={iconInk} />
           </a>
           <a
             href={`mailto:${contact.email}`}
             className={`inline-flex h-9 w-9 items-center justify-center rounded-full border transition ${
               scrolled
-                ? "border-white/12 text-zinc-200 hover:border-white/30"
-                : "border-black/20 hover:border-black/45"
+                ? "border-white/12 hover:border-white/30"
+                : "border-black/25 hover:border-black/50"
             }`}
             aria-label="Email"
           >
-            <Mail size={15} />
+            <Mail size={15} color={iconInk} />
           </a>
         </div>
       </nav>

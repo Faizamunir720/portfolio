@@ -1,15 +1,21 @@
 type IconProps = {
   size?: number;
   className?: string;
+  /** Hardcoded paint — avoids currentColor inheriting light page ink */
+  color?: string;
 };
 
-export function GitHubIcon({ size = 16, className = "" }: IconProps) {
+export function GitHubIcon({
+  size = 16,
+  className = "",
+  color = "currentColor",
+}: IconProps) {
   return (
     <svg
       width={size}
       height={size}
       viewBox="0 0 24 24"
-      fill="currentColor"
+      fill={color}
       className={className}
       aria-hidden="true"
     >
@@ -18,13 +24,17 @@ export function GitHubIcon({ size = 16, className = "" }: IconProps) {
   );
 }
 
-export function LinkedInIcon({ size = 16, className = "" }: IconProps) {
+export function LinkedInIcon({
+  size = 16,
+  className = "",
+  color = "currentColor",
+}: IconProps) {
   return (
     <svg
       width={size}
       height={size}
       viewBox="0 0 24 24"
-      fill="currentColor"
+      fill={color}
       className={className}
       aria-hidden="true"
     >

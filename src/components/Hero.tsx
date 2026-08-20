@@ -1,6 +1,5 @@
 "use client";
 
-import { useLayoutEffect, useRef } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import { Download } from "lucide-react";
 import { contact } from "@/data/site";
@@ -8,41 +7,54 @@ import { GitHubIcon, LinkedInIcon } from "@/components/SocialIcons";
 import { HeroGridCanvas } from "@/components/HeroGridCanvas";
 import { RollingTextButton } from "@/components/RollingTextButton";
 
-const LIGHT_INK = "#000000";
-
-function forceBlack(el: HTMLElement | null) {
-  if (!el) return;
-  el.style.setProperty("color", LIGHT_INK, "important");
-  el.style.setProperty("-webkit-text-fill-color", LIGHT_INK, "important");
-  el.style.setProperty("opacity", "1", "important");
-  el.style.setProperty("mix-blend-mode", "normal", "important");
-  el.style.setProperty("filter", "none", "important");
+/**
+ * Title as SVG with hardcoded fill — CSS `color` / color-scheme cannot bleach this.
+ */
+function HeroTitle() {
+  return (
+    <h1 className="max-w-[14ch] sm:max-w-[18ch]">
+      <span className="sr-only">Systems that hold.</span>
+      <svg
+        viewBox="0 0 340 150"
+        className="block h-auto w-full"
+        role="presentation"
+        aria-hidden
+      >
+        <text
+          x="0"
+          y="58"
+          fill="#000000"
+          fontSize="52"
+          fontWeight="800"
+          fontFamily="ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif"
+          letterSpacing="-1.5"
+        >
+          Systems that
+        </text>
+        <text
+          x="0"
+          y="122"
+          fill="#000000"
+          fontSize="52"
+          fontWeight="800"
+          fontFamily="ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif"
+          letterSpacing="-1.5"
+        >
+          hold.
+        </text>
+      </svg>
+    </h1>
+  );
 }
 
-/**
- * Cosmic hero sits on a LIGHT canvas while the page theme is DARK
- * (--foreground ≈ white). Anything that inherits body color becomes
- * white-on-white. Force pure black on the light-field copy.
- */
 export function Hero() {
   const reduce = useReducedMotion();
-  const titleRef = useRef<HTMLHeadingElement>(null);
-  const clusterRef = useRef<HTMLDivElement>(null);
-
-  useLayoutEffect(() => {
-    forceBlack(titleRef.current);
-    forceBlack(clusterRef.current);
-    const cluster = clusterRef.current;
-    if (!cluster) return;
-    cluster.querySelectorAll<HTMLElement>("a:not(.hero-cta-fill)").forEach(forceBlack);
-  }, []);
 
   return (
     <section
       id="hero"
-      className="relative h-[68svh] min-h-[440px] max-h-[620px] w-full overflow-hidden sm:h-[72svh] sm:min-h-[480px] sm:max-h-[680px] lg:h-[74svh] lg:max-h-[720px]"
+      className="relative isolate h-[68svh] min-h-[440px] max-h-[620px] w-full overflow-hidden sm:h-[72svh] sm:min-h-[480px] sm:max-h-[680px] lg:h-[74svh] lg:max-h-[720px]"
       aria-label="Introduction"
-      style={{ colorScheme: "only light" }}
     >
       <HeroGridCanvas />
 
@@ -53,54 +65,41 @@ export function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
         >
-          {/* Plain div owns ink — Framer must not own the color style */}
-          <div
-            ref={clusterRef}
-            className="hero-light-ink"
-            style={{ color: LIGHT_INK, WebkitTextFillColor: LIGHT_INK }}
-          >
-            <h1
-              ref={titleRef}
-              className="max-w-[14ch] text-[clamp(2rem,8.5vw,4.75rem)] font-extrabold leading-[0.95] tracking-tight sm:max-w-[18ch]"
-              style={{ color: LIGHT_INK, WebkitTextFillColor: LIGHT_INK }}
-            >
-              Systems that hold.
-            </h1>
+          <HeroTitle />
 
-            <div className="relative z-20 mt-4 flex flex-wrap items-center gap-2 sm:mt-6 sm:gap-3">
-              <RollingTextButton
-                href="#work"
-                label="View Projects"
-                rollLabel="See the work"
-                className="hero-cta-fill rounded-full bg-[#05060c] px-3.5 py-2 text-[13px] font-semibold text-[#f4f4f5] sm:px-5 sm:py-2.5 sm:text-sm"
-              />
-              <RollingTextButton
-                href="#"
-                label="Download CV"
-                rollLabel="Get the PDF"
-                showChevron={false}
-                icon={<Download size={14} />}
-                className="rounded-full border border-black/30 bg-[#f4f4f5] px-3.5 py-2 text-[13px] text-black transition hover:border-black/55 sm:px-5 sm:py-2.5 sm:text-sm"
-              />
-              <a
-                href={contact.github}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="relative z-[21] inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-black/30 bg-[#f4f4f5] text-black shadow-[0_1px_0_rgb(5_6_12_/_0.08)] transition hover:border-black/55 sm:h-10 sm:w-10"
-                aria-label="GitHub"
-              >
-                <GitHubIcon size={15} />
-              </a>
-              <a
-                href={contact.linkedin}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="relative z-[21] inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-black/30 bg-[#f4f4f5] text-black shadow-[0_1px_0_rgb(5_6_12_/_0.08)] transition hover:border-black/55 sm:h-10 sm:w-10"
-                aria-label="LinkedIn"
-              >
-                <LinkedInIcon size={15} />
-              </a>
-            </div>
+          <div className="relative z-20 mt-4 flex flex-wrap items-center gap-2 sm:mt-6 sm:gap-3">
+            <RollingTextButton
+              href="#work"
+              label="View Projects"
+              rollLabel="See the work"
+              className="rounded-full bg-[#05060c] px-3.5 py-2 text-[13px] font-semibold text-[#f4f4f5] sm:px-5 sm:py-2.5 sm:text-sm"
+            />
+            <RollingTextButton
+              href="#"
+              label="Download CV"
+              rollLabel="Get the PDF"
+              showChevron={false}
+              icon={<Download size={14} color="#000000" />}
+              className="rounded-full border-2 border-[#000000] bg-[#f4f4f5] px-3.5 py-2 text-[13px] font-semibold text-[#000000] transition hover:bg-white sm:px-5 sm:py-2.5 sm:text-sm"
+            />
+            <a
+              href={contact.github}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="relative z-[21] inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full border-2 border-[#000000] bg-[#f4f4f5] sm:h-10 sm:w-10"
+              aria-label="GitHub"
+            >
+              <GitHubIcon size={15} color="#000000" />
+            </a>
+            <a
+              href={contact.linkedin}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="relative z-[21] inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full border-2 border-[#000000] bg-[#f4f4f5] sm:h-10 sm:w-10"
+              aria-label="LinkedIn"
+            >
+              <LinkedInIcon size={15} color="#000000" />
+            </a>
           </div>
         </motion.div>
 

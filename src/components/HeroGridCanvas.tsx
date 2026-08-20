@@ -218,7 +218,7 @@ export function HeroGridCanvas() {
   return (
     <canvas
       ref={canvasRef}
-      className="absolute inset-0 h-full w-full touch-none"
+      className="absolute inset-0 z-0 h-full w-full touch-none"
       aria-hidden
     />
   );
