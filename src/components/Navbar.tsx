@@ -18,42 +18,6 @@ const SHOW_DELTA = 8;
 const TOP_REVEAL = 64;
 const LERP = 0.14;
 
-function BrandMark({ ink }: { ink: "light" | "dark" }) {
-  const fill = ink === "light" ? "#000000" : "#ffffff";
-  return (
-    <svg
-      width="72"
-      height="18"
-      viewBox="0 0 72 18"
-      className="block"
-      aria-hidden
-    >
-      <text
-        x="0"
-        y="14"
-        fill={fill}
-        fontSize="14"
-        fontWeight="600"
-        fontFamily="ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif"
-        letterSpacing="0.04em"
-      >
-        FAIZA
-      </text>
-      <text
-        x="58"
-        y="14"
-        fill={fill}
-        fillOpacity="0.45"
-        fontSize="14"
-        fontWeight="600"
-        fontFamily="ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif"
-      >
-        .
-      </text>
-    </svg>
-  );
-}
-
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const headerRef = useRef<HTMLElement>(null);
@@ -140,11 +104,36 @@ export function Navbar() {
           ? "border-b border-white/10 bg-[#05060c]/92 text-white"
           : "border-b border-transparent bg-transparent"
       }`}
-      style={{ transform: "translate3d(0,0,0)", opacity: 1 }}
+      style={{
+        transform: "translate3d(0,0,0)",
+        opacity: 1,
+        isolation: "isolate",
+        mixBlendMode: "normal",
+      }}
     >
       <nav className="mx-auto flex w-full max-w-[1600px] items-center justify-between px-5 py-3.5 sm:px-8 lg:px-12">
-        <a href="#hero" aria-label="FAIZA">
-          <BrandMark ink={overHero ? "light" : "dark"} />
+        {/* Solid plate when over light hero — brand cannot bleach into the canvas */}
+        <a
+          href="#hero"
+          aria-label="FAIZA"
+          className={
+            overHero
+              ? "rounded-full bg-[#f4f4f5] px-3 py-1.5 text-sm font-semibold tracking-wide text-black"
+              : "px-1 text-sm font-semibold tracking-wide text-white"
+          }
+          style={
+            overHero
+              ? {
+                  color: "#000000",
+                  WebkitTextFillColor: "#000000",
+                  isolation: "isolate",
+                  mixBlendMode: "normal",
+                  backgroundColor: "#f4f4f5",
+                }
+              : undefined
+          }
+        >
+          FAIZA<span className="opacity-45">.</span>
         </a>
         <ul
           className={`hidden items-center gap-6 text-[11px] font-medium uppercase tracking-[0.16em] md:flex ${
@@ -164,7 +153,22 @@ export function Navbar() {
             </li>
           ))}
         </ul>
-        <div className="flex items-center gap-2">
+        <div
+          className={
+            overHero
+              ? "flex items-center gap-2 rounded-full bg-[#f4f4f5] px-2 py-1"
+              : "flex items-center gap-2"
+          }
+          style={
+            overHero
+              ? {
+                  isolation: "isolate",
+                  mixBlendMode: "normal",
+                  backgroundColor: "#f4f4f5",
+                }
+              : undefined
+          }
+        >
           <a
             href={contact.github}
             target="_blank"
@@ -172,7 +176,7 @@ export function Navbar() {
             className={`inline-flex h-9 w-9 items-center justify-center rounded-full border transition ${
               scrolled
                 ? "border-white/12 hover:border-white/30"
-                : "border-black/25 hover:border-black/50"
+                : "border-black/30 hover:border-black/55"
             }`}
             aria-label="GitHub"
           >
@@ -185,7 +189,7 @@ export function Navbar() {
             className={`inline-flex h-9 w-9 items-center justify-center rounded-full border transition ${
               scrolled
                 ? "border-white/12 hover:border-white/30"
-                : "border-black/25 hover:border-black/50"
+                : "border-black/30 hover:border-black/55"
             }`}
             aria-label="LinkedIn"
           >
@@ -196,7 +200,7 @@ export function Navbar() {
             className={`inline-flex h-9 w-9 items-center justify-center rounded-full border transition ${
               scrolled
                 ? "border-white/12 hover:border-white/30"
-                : "border-black/25 hover:border-black/50"
+                : "border-black/30 hover:border-black/55"
             }`}
             aria-label="Email"
           >
